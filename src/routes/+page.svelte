@@ -1,8 +1,6 @@
 <script>
   const blobUrl = import.meta.env.VITE_BLOB_URL
 
-  import Logo from '$lib/logo.png'
-
   const header = blobUrl + '/assets/header-pWmEYuXFGGsFeMZJaBaTxpWlJxCFC2.png';
   const mine = blobUrl + '/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png';
 	const claim = blobUrl + '/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png';
