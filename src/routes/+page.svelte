@@ -15,7 +15,7 @@
   let yExplainer = 1/2;
   let mtSocialsMult = 1.5;
 
-  const discordLink = "https://discord.gg/TtQAZtsru6";
+  const discordLink = "https://discord.gg/puredepin";
   const twitterLink = "https://twitter.com/justentropylol"
 </script>
 
