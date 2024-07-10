@@ -6,7 +6,7 @@
 	const claim = blobUrl + '/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png';
 	const perfect = blobUrl + '/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png';
 	const proud = blobUrl + '/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png';
-	const tokenomics = blobUrl + '/assets/list_tokenomics-J9QiN6173Xrj869VBhO66q7Hg6nHv6.png';
+	const tokenomics = blobUrl + '/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png';
 
   let refHeight = 10;
   let mtBannerMult = 1/3;
