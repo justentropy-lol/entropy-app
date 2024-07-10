@@ -17,6 +17,7 @@
 
   const discordLink = "https://discord.gg/puredepin";
   const twitterLink = "https://twitter.com/justentropylol"
+  const docsLink = "https://docs.puredepin.com/"
 </script>
 
 
@@ -56,7 +57,7 @@
       Tokenomics:
       <ul>
         <li>One-year halving schedule</li>
-        <li>22.3B max supply</li>
+        <li>55.5B max supply</li>
         <li>2.38% platform fee (on claims only)</li>
         <li>Requires hardware to mine</li>
         <li>Unclaimed tokens get burned</li>
@@ -68,6 +69,7 @@
   <div class="space-x-2 mb-4 text-md" style="margin-top: {refHeight*mtSocialsMult}px">
     <a href={discordLink} target="_blank" class="hover:opacity-75 active:opacity-50"><i class="fab fa-discord"></i></a>
     <a href={twitterLink} target="_blank" class="hover:opacity-75 active:opacity-50"><i class="fab fa-x-twitter"></i></a>
+    <a href={docsLink} target="_blank" class="hover:opacity-75 active:opacity-50"><i class="fa-solid fa-book"></i></a>
   </div>
 
 </div>
