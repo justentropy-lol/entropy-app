@@ -28,11 +28,14 @@
 
 <div class="flex flex-col items-center justify-center">
   <img
-    alt="ENTROPY: The world's first DePIN meme coin."
+    alt="ENTROPY: The world's first DePIN memecoin."
     src={header}
     class="w-11/12 min-w-80 max-w-4xl"
     style="margin-top: {refHeight * mtBannerMult}px"
   />
+
+  <h1 class="hidden">ENTROPY</h1>
+  <h2 class="hidden">THE WORLD'S FIRST DEPIN MEME COIN</h2>
 
   <div
     class="flex justify-around w-3/5 min-w-60 max-w-lg"
@@ -43,7 +46,7 @@
       href={discordLink}
       target="_blank"
       class="w-2/6 hover:opacity-75 active:opacity-50"
-      ><img alt="mint button" src={mine} /></a
+      ><img alt="mine button" src={mine} /></a
     >
     <img alt="claim button" src={claim} class="w-2/6 opacity-25" />
   </div>
@@ -52,7 +55,7 @@
     class="flex-col justify-around w-7/12 min-w-72 max-w-md"
     style="margin-top: {refHeight * mtExplainerMult}px"
   >
-    <h2 class="hidden">
+    <h3 class="hidden">
       ENTROPY is the perfect DePIN:
       <ul>
         <li>Ambiguous utility</li>
@@ -60,14 +63,14 @@
         <li>People-owned</li>
         <li>Miner-focused</li>
       </ul>
-    </h2>
+    </h3>
     <img
       alt="ENTROPY is the perfect DePIN"
       src={perfect}
       style="margin-bottom: {refHeight * yExplainer}px"
     />
 
-    <h2 class="hidden">
+    <h3 class="hidden">
       ENTROPY is proud to have:
       <ul>
         <li>No VC allocation</li>
@@ -75,14 +78,14 @@
         <li>No airdrop</li>
         <li>Perfect product-market fit</li>
       </ul>
-    </h2>
+    </h3>
     <img
       alt="ENTROPY is proud"
       src={proud}
       style="margin-bottom: {refHeight * yExplainer}px"
     />
 
-    <h2 class="hidden">
+    <h3 class="hidden">
       Tokenomics:
       <ul>
         <li>One-year halving schedule</li>
@@ -91,7 +94,7 @@
         <li>Requires hardware to mine</li>
         <li>Unclaimed tokens get burned</li>
       </ul>
-    </h2>
+    </h3>
     <img alt="ENTROPY tokenomics" src={tokenomics} />
   </div>
 
