@@ -19,6 +19,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@solana/wallet-adapter-base": "^0.9.23",
+		"@solana/wallet-adapter-ledger": "^0.9.25",
+		"@solana/wallet-adapter-phantom": "^0.9.24",
+		"@solana/wallet-adapter-wallets": "^0.19.32",
+		"@solana/web3.js": "^1.95.0",
 		"@vercel/blob": "^0.23.3"
 	}
 }

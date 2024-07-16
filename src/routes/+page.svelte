@@ -1,14 +1,19 @@
 <script>
-  import Footer from "$lib/Footer.svelte" 
+  import Footer from "$lib/Footer.svelte";
 
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
   const header = blobUrl + "/assets/header-pWmEYuXFGGsFeMZJaBaTxpWlJxCFC2.png";
-  const mine = blobUrl + "/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png";
-  const claim = blobUrl + "/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png";
-  const perfect = blobUrl + "/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png";
-  const proud = blobUrl + "/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png";
-  const tokenomics = blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
+  const mine =
+    blobUrl + "/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png";
+  const claim =
+    blobUrl + "/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png";
+  const perfect =
+    blobUrl + "/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png";
+  const proud =
+    blobUrl + "/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png";
+  const tokenomics =
+    blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
 
   let refHeight = 10;
   let mtBannerMult = 1 / 3;
@@ -19,22 +24,108 @@
 
   const discordLink = "https://discord.gg/puredepin";
 
+  import { onMount } from "svelte";
+  import { loadWallets, connectWallet, disconnectWallet } from "$lib/wallet.js";
+  import WalletModal from "$lib/WalletModal.svelte";
+
+  let wallets = [];
+  let walletConnected = false;
+  let publicKey;
+  let selectedWallet = null;
+  let showModal = false;
+
+  onMount(() => {
+    wallets = loadWallets();
+
+    // Check if any wallet is already connected
+    for (const wallet of wallets) {
+      if (wallet.connected) {
+        walletConnected = true;
+        publicKey = wallet.publicKey.toString();
+        selectedWallet = wallet;
+        break; // Stop checking other wallets once a connected one is found
+      }
+    }
+  });
+
+  const handleClaim = () => {
+    if (walletConnected) {
+      // Do Something
+    } else {
+      openModal();
+    }
+  };
+
+  const handleConnect = async (event) => {
+    const wallet = event.detail;
+    await connectWallet(wallet);
+    walletConnected = true;
+    publicKey = wallet.publicKey.toString();
+    showModal = false;
+  };
+
+  const handleDisconnect = async () => {
+    await disconnectWallet();
+    walletConnected = false;
+    publicKey = null;
+    selectedWallet = null;
+  };
+
+  const openModal = () => {
+    showModal = true;
+  };
+
+  const closeModal = () => {
+    showModal = false;
+  };
 </script>
 
-<div class="flex flex-col items-center justify-center">
-  <img alt="ENTROPY: The world's first DePIN memecoin." src={header} class="w-11/12 min-w-80 max-w-4xl" style="margin-top: {refHeight * mtBannerMult}px"/>
+{#if walletConnected}
+  <button
+    on:click={handleDisconnect}
+    class="absolute top-0 right-0 p-4 text-2xl"
+  >
+    <i class="fa-solid fa-right-from-bracket"></i>
+  </button>
+{/if}
 
+<div class="flex flex-col items-center justify-center">
+  <img
+    alt="ENTROPY: The world's first DePIN memecoin."
+    src={header}
+    class="w-11/12 min-w-80 max-w-4xl"
+    style="margin-top: {refHeight * mtBannerMult}px"
+  />
   <h1 class="hidden">ENTROPY</h1>
   <h2 class="hidden">THE WORLD'S FIRST DEPIN MEME COIN</h2>
-
-  <div class="flex justify-around w-3/5 min-w-60 max-w-lg" bind:clientHeight={refHeight} style="margin-top: {refHeight * mtButtonMult}px">
-    <a href={discordLink} target="_blank" class="w-2/6 hover:opacity-75 active:opacity-50">
+  <div
+    class="flex justify-around w-3/5 min-w-60 max-w-lg"
+    bind:clientHeight={refHeight}
+    style="margin-top: {refHeight * mtButtonMult}px"
+  >
+    <a
+      href={discordLink}
+      target="_blank"
+      class="w-2/6 hover:opacity-75 active:opacity-50"
+    >
       <img alt="mine button" src={mine} />
     </a>
-    <img alt="claim button" src={claim} class="w-2/6 opacity-25" />
+    <button
+      on:click={handleClaim}
+      class="w-2/6 hover:opacity-75 active:opacity-50"
+    >
+      <img alt="claim button" src={claim} />
+    </button>
   </div>
 
-  <div class="flex-col justify-around w-7/12 min-w-72 max-w-md" style="margin-top: {refHeight * mtExplainerMult}px">
+  {#if showModal}
+    <WalletModal on:select={handleConnect} on:close={closeModal} />
+  {/if}
+
+  <div
+    class="flex-col justify-around w-7/12 min-w-72 max-w-md"
+    style="margin-top: {refHeight * mtExplainerMult}px"
+  >
     <h3 class="hidden">
       ENTROPY is the perfect DePIN:
       <ul>
@@ -44,7 +135,11 @@
         <li>Miner-focused</li>
       </ul>
     </h3>
-    <img alt="ENTROPY is the perfect DePIN" src={perfect} style="margin-bottom: {refHeight * yExplainer}px"/>
+    <img
+      alt="ENTROPY is the perfect DePIN"
+      src={perfect}
+      style="margin-bottom: {refHeight * yExplainer}px"
+    />
 
     <h3 class="hidden">
       ENTROPY is proud to have:
@@ -55,7 +150,11 @@
         <li>Perfect product-market fit</li>
       </ul>
     </h3>
-    <img alt="ENTROPY is proud" src={proud} style="margin-bottom: {refHeight * yExplainer}px"/>
+    <img
+      alt="ENTROPY is proud"
+      src={proud}
+      style="margin-bottom: {refHeight * yExplainer}px"
+    />
 
     <h3 class="hidden">
       Tokenomics:
@@ -70,8 +169,10 @@
     <img alt="ENTROPY tokenomics" src={tokenomics} />
   </div>
 
-  <div class="flex justify-around space-x-2 mb-4 text-md" style="margin-top: {refHeight * mtSocialsMult}px">
+  <div
+    class="flex justify-around space-x-2 mb-4 text-md"
+    style="margin-top: {refHeight * mtSocialsMult}px"
+  >
     <Footer />
   </div>
 </div>
-
