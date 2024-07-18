@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
+  content: ["./src/**/*.{html,js,svelte,ts}"],
   theme: {
     extend: {
       colors: {
-        'flamingo': '#fc8eac',
+        flamingo: "#fc8eac",
       },
       fontFamily: {
         sans: ['"Roboto"', 'sans-serif'], // Set Roboto as the default sans font
@@ -13,5 +13,4 @@ export default {
     },
   },
   plugins: [],
-}
-
+};
