@@ -1,14 +1,10 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { loadWallets } from "./wallet.js";
+  import { supportedWallets } from "./wallet.js";
 
   const dispatch = createEventDispatcher();
 
-  let wallets = loadWallets();
-  let selectedWallet = null;
-
   const selectWallet = (wallet) => {
-    selectedWallet = wallet;
     dispatch("select", wallet);
   };
 </script>
@@ -17,8 +13,8 @@
   <div class="modal-content" on:click|stopPropagation>
     <h2>Select a Wallet</h2>
     <ul class="wallet-list">
-      {#each wallets as wallet}
-        <li on:click={() => selectWallet(wallet)}>{wallet.name}</li>
+      {#each supportedWallets as wallet}
+        <li on:click={() => selectWallet(wallet)}>{wallet}</li>
       {/each}
     </ul>
   </div>

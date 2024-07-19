@@ -25,50 +25,40 @@
   const discordLink = "https://discord.gg/puredepin";
 
   import { onMount } from "svelte";
-  import { loadWallets, connectWallet, disconnectWallet } from "$lib/wallet.js";
+  import {
+    checkIfWalletConnected,
+    connectWallet,
+    disconnectWallet,
+  } from "$lib/wallet.js";
+  import { handleMinerClaimTx } from "$lib/claim.js";
   import WalletModal from "$lib/WalletModal.svelte";
 
-  let wallets = [];
   let walletConnected = false;
-  let publicKey;
-  let selectedWallet = null;
   let showModal = false;
 
   onMount(() => {
-    wallets = loadWallets();
-
-    // Check if any wallet is already connected
-    for (const wallet of wallets) {
-      if (wallet.connected) {
-        walletConnected = true;
-        publicKey = wallet.publicKey.toString();
-        selectedWallet = wallet;
-        break; // Stop checking other wallets once a connected one is found
-      }
-    }
+    walletConnected = checkIfWalletConnected();
   });
 
-  const handleClaim = () => {
+  const handleClaim = async () => {
     if (walletConnected) {
-      // Do Something
+      // TODO: show some spinning wheel while waiting
+      // Also deactivate the button while the operation is going on, otherwise user can click several times
+      await handleMinerClaimTx();
     } else {
       openModal();
     }
   };
 
-  const handleConnect = async (event) => {
-    const wallet = event.detail;
-    await connectWallet(wallet);
-    walletConnected = true;
-    publicKey = wallet.publicKey.toString();
+  const handleConnect = async () => {
+    await connectWallet();
     showModal = false;
+    walletConnected = true;
   };
 
   const handleDisconnect = async () => {
     await disconnectWallet();
     walletConnected = false;
-    publicKey = null;
-    selectedWallet = null;
   };
 
   const openModal = () => {

@@ -1,39 +1,62 @@
-// wallet.js
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  LedgerWalletAdapter,
-  CoinbaseWalletAdapter,
-  TrustWalletAdapter,
-  MathWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+// TODO: try with all of them
+const supportedWallets = ["Phantom", "Solflare", "Backpack"];
 
-export const network = WalletAdapterNetwork.Mainnet;
-const walletAdapters = [
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  LedgerWalletAdapter,
-  CoinbaseWalletAdapter,
-  TrustWalletAdapter,
-  MathWalletAdapter,
-];
-
-export let selectedWallet = null;
-
-export const loadWallets = () => {
-  return walletAdapters.map((Adapter) => new Adapter({ network }));
+const getProvider = () => {
+  return window.solana;
 };
 
-export const connectWallet = async (wallet) => {
-  selectedWallet = wallet;
-  if (!wallet.connected) {
-    await wallet.connect();
+const checkIfWalletConnected = () => {
+  const provider = getProvider();
+
+  return provider.isConnected;
+};
+
+const getPublicKey = () => {
+  const provider = getProvider();
+
+  if (provider.isConnected) {
+    return provider.publicKey;
   }
 };
 
-export const disconnectWallet = async () => {
-  if (selectedWallet && selectedWallet.connected) {
-    await selectedWallet.disconnect();
+const connectWallet = async () => {
+  const provider = getProvider();
+
+  if (!provider.isConnected) {
+    await provider.connect();
   }
+};
+
+const disconnectWallet = async () => {
+  const provider = getProvider();
+
+  if (provider.isConnected) {
+    await provider.disconnect();
+  }
+};
+
+const signAndSubmitTx = async (transaction) => {
+  const provider = getProvider();
+
+  if (provider.isConnected) {
+    try {
+      // @solana/wallet-adapter requires us to set up our own RPC connection.
+      // Luckily most browser wallets (e.g. Phantom, Solflare, Backpack) expose a `signAndSendTransaction`
+      // method which allows us to leverage their optimized RPC.
+      // Benefit for us: no RPC to set up. Benefit for user: submit txs via great RPCs.
+      const { signature } = await provider.signAndSendTransaction(transaction);
+      console.log(signature);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
+
+export {
+  checkIfWalletConnected,
+  connectWallet,
+  disconnectWallet,
+  signAndSubmitTx,
+  getPublicKey,
+  supportedWallets,
 };
