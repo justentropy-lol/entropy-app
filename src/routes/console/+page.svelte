@@ -11,8 +11,9 @@
   let errorMsg = '';
   let latestValueHex = '';
   let latestTimestampFormatted = '';
-  let valueMean = 0.0;
+  let valueMean = 0.5;
   let intervalMean = 0.0;
+  let entropyMean = 1;
   let dataBoxDisplay = false;
   let submitDisabled = false;
 
@@ -56,7 +57,8 @@
         hour: '2-digit', 
         minute: '2-digit' 
       });
-      valueMean = data.value_mean.toFixed(3);
+      valueMean = data.value_mean
+      entropyMean = -(valueMean*Math.log2(valueMean)+(1-valueMean)*Math.log2(1-valueMean)).toFixed(3);
       intervalMean = data.interval_mean.toFixed(3);
       dataBoxDisplay = true;
     }
@@ -84,7 +86,7 @@
     </div>
     <div>
     Mean entropy:
-    <span class="font-sans">{valueMean} (normalized)</span>
+    <span class="font-sans">{entropyMean} (normalized)</span>
     </div>
     <div>
     Mean interval:
