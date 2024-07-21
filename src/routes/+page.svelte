@@ -1,17 +1,14 @@
 <script>
+  import Footer from "$lib/Footer.svelte" 
+
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
   const header = blobUrl + "/assets/header-pWmEYuXFGGsFeMZJaBaTxpWlJxCFC2.png";
-  const mine =
-    blobUrl + "/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png";
-  const claim =
-    blobUrl + "/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png";
-  const perfect =
-    blobUrl + "/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png";
-  const proud =
-    blobUrl + "/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png";
-  const tokenomics =
-    blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
+  const mine = blobUrl + "/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png";
+  const claim = blobUrl + "/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png";
+  const perfect = blobUrl + "/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png";
+  const proud = blobUrl + "/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png";
+  const tokenomics = blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
 
   let refHeight = 10;
   let mtBannerMult = 1 / 3;
@@ -21,40 +18,23 @@
   let mtSocialsMult = 1.5;
 
   const discordLink = "https://discord.gg/puredepin";
-  const twitterLink = "https://twitter.com/justentropylol";
-  const githubLink = "https://github.com/justentropy-lol";
-  const docsLink = "https://docs.puredepin.com/";
+
 </script>
 
 <div class="flex flex-col items-center justify-center">
-  <img
-    alt="ENTROPY: The world's first DePIN memecoin."
-    src={header}
-    class="w-11/12 min-w-80 max-w-4xl"
-    style="margin-top: {refHeight * mtBannerMult}px"
-  />
+  <img alt="ENTROPY: The world's first DePIN memecoin." src={header} class="w-11/12 min-w-80 max-w-4xl" style="margin-top: {refHeight * mtBannerMult}px"/>
 
   <h1 class="hidden">ENTROPY</h1>
   <h2 class="hidden">THE WORLD'S FIRST DEPIN MEME COIN</h2>
 
-  <div
-    class="flex justify-around w-3/5 min-w-60 max-w-lg"
-    bind:clientHeight={refHeight}
-    style="margin-top: {refHeight * mtButtonMult}px"
-  >
-    <a
-      href={discordLink}
-      target="_blank"
-      class="w-2/6 hover:opacity-75 active:opacity-50"
-      ><img alt="mine button" src={mine} /></a
-    >
+  <div class="flex justify-around w-3/5 min-w-60 max-w-lg" bind:clientHeight={refHeight} style="margin-top: {refHeight * mtButtonMult}px">
+    <a href={discordLink} target="_blank" class="w-2/6 hover:opacity-75 active:opacity-50">
+      <img alt="mine button" src={mine} />
+    </a>
     <img alt="claim button" src={claim} class="w-2/6 opacity-25" />
   </div>
 
-  <div
-    class="flex-col justify-around w-7/12 min-w-72 max-w-md"
-    style="margin-top: {refHeight * mtExplainerMult}px"
-  >
+  <div class="flex-col justify-around w-7/12 min-w-72 max-w-md" style="margin-top: {refHeight * mtExplainerMult}px">
     <h3 class="hidden">
       ENTROPY is the perfect DePIN:
       <ul>
@@ -64,11 +44,7 @@
         <li>Miner-focused</li>
       </ul>
     </h3>
-    <img
-      alt="ENTROPY is the perfect DePIN"
-      src={perfect}
-      style="margin-bottom: {refHeight * yExplainer}px"
-    />
+    <img alt="ENTROPY is the perfect DePIN" src={perfect} style="margin-bottom: {refHeight * yExplainer}px"/>
 
     <h3 class="hidden">
       ENTROPY is proud to have:
@@ -79,11 +55,7 @@
         <li>Perfect product-market fit</li>
       </ul>
     </h3>
-    <img
-      alt="ENTROPY is proud"
-      src={proud}
-      style="margin-bottom: {refHeight * yExplainer}px"
-    />
+    <img alt="ENTROPY is proud" src={proud} style="margin-bottom: {refHeight * yExplainer}px"/>
 
     <h3 class="hidden">
       Tokenomics:
@@ -98,33 +70,8 @@
     <img alt="ENTROPY tokenomics" src={tokenomics} />
   </div>
 
-  <div
-    class="space-x-2 mb-4 text-md"
-    style="margin-top: {refHeight * mtSocialsMult}px"
-  >
-    <a
-      href={discordLink}
-      target="_blank"
-      class="hover:opacity-75 active:opacity-50"
-      ><i class="fab fa-discord"></i></a
-    >
-    <a
-      href={twitterLink}
-      target="_blank"
-      class="hover:opacity-75 active:opacity-50"
-      ><i class="fab fa-x-twitter"></i></a
-    >
-    <a
-      href={githubLink}
-      target="_blank"
-      class="hover:opacity-75 active:opacity-50"
-      ><i class="fa-brands fa-github"></i></a
-    >
-    <a
-      href={docsLink}
-      target="_blank"
-      class="hover:opacity-75 active:opacity-50"
-      ><i class="fa-solid fa-book"></i></a
-    >
+  <div class="flex justify-around space-x-2 mb-4 text-md" style="margin-top: {refHeight * mtSocialsMult}px">
+    <Footer />
   </div>
 </div>
+
