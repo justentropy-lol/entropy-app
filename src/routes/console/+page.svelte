@@ -78,9 +78,9 @@
   {/if}
   <div id="result" class="flex-grow space-y-4 p-4 text-white text-2xl tracking-wider font-display max-w-md mx-auto whitespace-pre-wrap transition-opacity duration-500" style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay ? 'auto' : 'none'};">
     <div>
-      Latest received:
-      <span class="font-sans">{latestValueHex}
-      at {latestTimestampFormatted}</span>
+    Latest received:
+    <span class="font-sans">{latestValueHex}
+    at {latestTimestampFormatted}</span>
     </div>
     <div>
     Mean entropy:
