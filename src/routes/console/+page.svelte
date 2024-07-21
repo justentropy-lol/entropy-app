@@ -22,7 +22,6 @@
 
     if(!submitDisabled) {
       submitDisabled = true;
-      setTimeout(() => { submitDisabled = false; }, 2500); 
 
       try {
         const response = await fetch(api_endpoint, {
@@ -38,6 +37,7 @@
       } catch (error) {
         result = `Error: ${error.message}`;
       }
+      setTimeout(() => { submitDisabled = false; }, 700); 
     }
   }
 
@@ -68,7 +68,7 @@
   <form on:submit|preventDefault={handleSubmit} class="flex flex-col items-center pt-20 space-y-8 mb-8">
     <input type="text" bind:value={input} name="input" required class="bg-transparent border-b-2 border-white outline-none text-center text-white text-2xl tracking-wider placeholder-white transition duration-300 w-full max-w-lg p-2" placeholder="enter your entropy miner name..."/>
     <button type="submit" class="flex justify-around mt-4 px-4 py-2 transition duration-300">
-      <img alt="submit button" src={submit} class:disabled={submitDisabled} class="w-2/6 hover:opacity-75 active:opacity-50"/>
+      <img alt="submit button" src={submit} class:disabled={submitDisabled} class="w-2/6 hover:opacity-75 active:opacity-50 transition duration-300"/>
     </button>
   </form>
   {#if errorMsg}
