@@ -32,7 +32,7 @@
 
     if (!submitDisabled) {
       submitDisabled = true;
-      urlSearchParams.set("name", input);
+      urlSearchParams.set("miner", input);
       goto(`?${urlSearchParams.toString()}`);
 
       try {
