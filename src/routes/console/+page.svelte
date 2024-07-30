@@ -1,8 +1,13 @@
 <script>
   import Footer from "$lib/Footer.svelte" 
+  import { browser } from '$app/environment';
+  import { goto } from "$app/navigation";
 
   const api_endpoint = import.meta.env.VITE_API_MINER_QUERY_ENDPOINT;
   const blobUrl = import.meta.env.VITE_BLOB_URL;
+
+  const urlSearchParams = browser ? new URLSearchParams(window.location.search) : undefined;
+  const urlName = urlSearchParams?.get("name");
 
   const submit = blobUrl + "/assets/button_submit-00dEiJQcR1pzyfl804W8U0cBd73o1j.png";
 
@@ -17,12 +22,18 @@
   let dataBoxDisplay = false;
   let submitDisabled = false;
 
+  if (urlName) {
+    input = urlName;
+    handleSubmit();
+  }
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e?.preventDefault();
 
-    if(!submitDisabled) {
+    if (!submitDisabled) {
       submitDisabled = true;
+      urlSearchParams.set("name", input);
+      goto(`?${urlSearchParams.toString()}`);
 
       try {
         const response = await fetch(api_endpoint, {
