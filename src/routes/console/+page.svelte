@@ -7,7 +7,7 @@
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
   const urlSearchParams = browser ? new URLSearchParams(window.location.search) : undefined;
-  const urlName = urlSearchParams?.get("name");
+  const urlName = urlSearchParams?.get("miner");
 
   const submit = blobUrl + "/assets/button_submit-00dEiJQcR1pzyfl804W8U0cBd73o1j.png";
 
