@@ -42,16 +42,16 @@
 
   const handleClaim = async () => {
     if (walletConnected) {
-      // TODO: show some spinning wheel while waiting
-      // Also deactivate the button while the operation is going on, otherwise user can click several times
+      // TODO: a) show some spinning wheel while waiting
+      //       b) deactivate the button while the operation is going on, otherwise user can click several times
       await handleMinerClaimTx();
     } else {
       openModal();
     }
   };
 
-  const handleConnect = async () => {
-    await connectWallet();
+  const handleConnect = async (event) => {
+    await connectWallet(event.detail.wallet);
     showModal = false;
     walletConnected = true;
   };

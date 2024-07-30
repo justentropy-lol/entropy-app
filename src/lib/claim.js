@@ -18,12 +18,19 @@ const getClaimTx = async (minerPubkey) => {
     }),
   });
 
+  if (httpRes.status === 204) {
+    // TODO: handle this more nicely, e.g. pop-up with proper error message
+    throw new Error("No rewards available for this address");
+  }
+
   if (httpRes.status != 200) {
     // unlike in node, unhandled errors are painless, simply write a message to console
     throw new Error(`${httpRes.status}`);
   }
 
   const httpBody = await httpRes.json();
+
+  console.log("claimTx: ", httpBody.claimTx);
 
   const bufferedTx = Buffer.from(httpBody.claimTx, "base64");
   const claimTx = web3.Transaction.from(bufferedTx);

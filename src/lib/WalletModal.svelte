@@ -5,7 +5,7 @@
   const dispatch = createEventDispatcher();
 
   const selectWallet = (wallet) => {
-    dispatch("select", wallet);
+    dispatch("select", { wallet: wallet });
   };
 </script>
 
