@@ -59,7 +59,9 @@
       dataBoxDisplay = false;
     } else {
       errorMsg = '';
-      latestValueHex = `0x${parseInt(data.value_latest, 10).toString(16)}`;
+      const valueLatest = BigInt(data.value_latest_str);
+      console.log(valueLatest);
+      latestValueHex = `0x${valueLatest.toString(16)}`;
       const date = new Date(data.timestamp_latest);
       latestTimestampFormatted = date.toLocaleString('en-US', { 
         year: 'numeric', 
