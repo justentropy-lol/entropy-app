@@ -60,7 +60,6 @@
     } else {
       errorMsg = '';
       const valueLatest = BigInt(data.value_latest_str);
-      console.log(valueLatest);
       latestValueHex = `0x${valueLatest.toString(16)}`;
       const date = new Date(data.timestamp_latest);
       latestTimestampFormatted = date.toLocaleString('en-US', { 
