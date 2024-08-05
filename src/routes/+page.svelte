@@ -26,39 +26,51 @@
 
   import { onMount } from "svelte";
   import {
-    checkIfWalletConnected,
+    checkIfWalletConnectedSetProvider,
     connectWallet,
     disconnectWallet,
+    checkIfWalletConnected,
   } from "$lib/wallet.js";
   import { handleMinerClaimTx } from "$lib/claim.js";
+  import DisclaimerModal from "$lib/DisclaimerModal.svelte";
   import WalletModal from "$lib/WalletModal.svelte";
 
   let walletConnected = false;
   let showModal = false;
+  let showConfirm = false;
+  let claimingInProcess = false;
 
   onMount(() => {
-    walletConnected = checkIfWalletConnected();
+    walletConnected = checkIfWalletConnectedSetProvider();
   });
 
   const handleClaim = async () => {
     if (walletConnected) {
+      showConfirm = true;
       // TODO: a) show some spinning wheel while waiting
       //       b) deactivate the button while the operation is going on, otherwise user can click several times
-      await handleMinerClaimTx();
+      //await handleMinerClaimTx();
     } else {
       openModal();
     }
   };
 
+  const confirmClaim = async () => {
+    claimingInProcess = true;
+    await handleMinerClaimTx();
+    claimingInProcess = false;
+    showConfirm = false;
+  };
+
   const handleConnect = async (event) => {
     await connectWallet(event.detail.wallet);
     showModal = false;
-    walletConnected = true;
+    walletConnected = checkIfWalletConnected();
   };
 
   const handleDisconnect = async () => {
     await disconnectWallet();
-    walletConnected = false;
+    walletConnected = checkIfWalletConnected();
   };
 
   const openModal = () => {
@@ -67,6 +79,7 @@
 
   const closeModal = () => {
     showModal = false;
+    showConfirm = false;
   };
 </script>
 
@@ -110,6 +123,22 @@
 
   {#if showModal}
     <WalletModal on:select={handleConnect} on:close={closeModal} />
+  {/if}
+
+  {#if showConfirm}
+    <DisclaimerModal on:select={confirmClaim} on:close={closeModal} />
+  {/if}
+
+  {#if claimingInProcess}
+    <div class="relative">
+      <div
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      >
+        <div
+          class="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-transparent border-t-white"
+        ></div>
+      </div>
+    </div>
   {/if}
 
   <div

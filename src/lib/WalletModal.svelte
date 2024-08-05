@@ -2,6 +2,21 @@
   import { createEventDispatcher } from "svelte";
   import { supportedWallets } from "./wallet.js";
 
+  const blobUrl = import.meta.env.VITE_BLOB_URL;
+
+  const phantom =
+    blobUrl + "/assets/phantom-pGdqPyQCACbxyNNnWO6kNNUTsg8kmg.png";
+  const solflare =
+    blobUrl + "/assets/solflare-WgRkHypRcCedYZI4NN68kyRxy8BA7D.png";
+  const backpack =
+    blobUrl + "/assets/backpack-mCkj7EgImaSU0ChkSGVWx85tUJo2uK.png";
+
+  const walletImage = {
+    phantom: phantom,
+    solflare: solflare,
+    backpack: backpack,
+  };
+
   const dispatch = createEventDispatcher();
 
   const selectWallet = (wallet) => {
@@ -9,47 +24,21 @@
   };
 </script>
 
-<div class="modal-background" on:click={() => dispatch("close")}>
-  <div class="modal-content" on:click|stopPropagation>
-    <h2>Select a Wallet</h2>
-    <ul class="wallet-list">
-      {#each supportedWallets as wallet}
-        <li on:click={() => selectWallet(wallet)}>{wallet}</li>
-      {/each}
-    </ul>
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+  on:click={() => dispatch("close")}
+>
+  <div
+    class="flex flex-col items-center justify-around w-5/12 min-w-48 max-w-60 space-y-6 bg-flamingo p-5 rounded-3xl shadow-lg"
+    on:click|stopPropagation
+  >
+    {#each supportedWallets as wallet}
+      <button
+        on:click={() => selectWallet(wallet)}
+        class="hover:opacity-75 active:opacity-50"
+      >
+        <img src={walletImage[wallet]} />
+      </button>
+    {/each}
   </div>
 </div>
-
-<style>
-  .modal-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .modal-content {
-    background: black;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  .wallet-list {
-    list-style: none;
-    padding: 0;
-  }
-  .wallet-list li {
-    margin: 10px 0;
-    cursor: pointer;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  .wallet-list li:hover {
-    background-color: #f0f0f0;
-  }
-</style>

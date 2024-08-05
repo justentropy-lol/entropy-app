@@ -39,35 +39,34 @@ const setProvider = (walletName) => {
       }
       break;
     default:
-      console.error("Error connecting with a solana wallet");
+      console.error("Error connecting a Solana wallet");
   }
 };
 
-const checkIfWalletConnected = () => {
-  for (const wallet in supportedWallets) {
+const checkIfWalletConnectedSetProvider = () => {
+  for (const wallet of supportedWallets) {
     switch (wallet) {
       case "phantom":
-        if (window.phantom.solana.isConnected) {
+        if (window.phantom && window.phantom.solana.isConnected) {
           setProvider("phantom");
           return true;
         }
         break;
       case "solflare":
-        if (window.solflare.isConnected) {
+        if (window.solflare && window.solflare.isConnected) {
           setProvider("solflare");
           return true;
         }
         break;
       case "backpack":
-        if (window.backpack.isConnected) {
+        if (window.backpack && window.backpack.isConnected) {
           setProvider("backpack");
           return true;
         }
         break;
     }
-
-    return false;
   }
+  return false;
 };
 
 const getPublicKey = () => {
@@ -79,15 +78,19 @@ const getPublicKey = () => {
 const connectWallet = async (wallet) => {
   setProvider(wallet);
 
-  if (!_provider.isConnected) {
+  if (!checkIfWalletConnected()) {
     await _provider.connect();
   }
 };
 
 const disconnectWallet = async () => {
-  if (_provider.isConnected) {
+  if (checkIfWalletConnected()) {
     await _provider.disconnect();
   }
+};
+
+const checkIfWalletConnected = () => {
+  return _provider.isConnected;
 };
 
 const signAndSubmitTx = async (transaction) => {
@@ -106,9 +109,10 @@ const signAndSubmitTx = async (transaction) => {
 };
 
 export {
-  checkIfWalletConnected,
+  checkIfWalletConnectedSetProvider,
   connectWallet,
   disconnectWallet,
+  checkIfWalletConnected,
   signAndSubmitTx,
   getPublicKey,
   supportedWallets,
