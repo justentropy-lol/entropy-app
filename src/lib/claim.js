@@ -18,9 +18,9 @@ const getClaimTx = async (minerPubkey) => {
     }),
   });
 
-  if (httpRes.status === 204) {
-    // TODO: handle this more nicely, e.g. pop-up with proper error message
-    throw new Error("No rewards available for this address");
+  if (httpRes.status === 400) {
+    const errorData = await httpRes.json();
+    throw new Error(errorData.code);
   }
 
   if (httpRes.status != 200) {
@@ -40,10 +40,15 @@ const getClaimTx = async (minerPubkey) => {
 
 const handleMinerClaimTx = async () => {
   const pubkey = getPublicKey().toBase58();
-  const claimTx = await getClaimTx(pubkey);
+  try {
+    const claimTx = await getClaimTx(pubkey);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
 
   console.log(claimTx);
-
   await signAndSubmitTx(claimTx);
 };
 

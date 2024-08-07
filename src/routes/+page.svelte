@@ -1,5 +1,9 @@
 <script>
+  import { writable } from "svelte/store";
   import Footer from "$lib/Footer.svelte";
+
+  let errorCode = writable(null);
+  let errorDetail = writable(null);
 
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
@@ -33,6 +37,7 @@
   } from "$lib/wallet.js";
   import { handleMinerClaimTx } from "$lib/claim.js";
   import DisclaimerModal from "$lib/DisclaimerModal.svelte";
+  import ErrorModal from "$lib/ErrorModal.svelte";
   import WalletModal from "$lib/WalletModal.svelte";
 
   let walletConnected = false;
@@ -47,9 +52,6 @@
   const handleClaim = async () => {
     if (walletConnected) {
       showConfirm = true;
-      // TODO: a) show some spinning wheel while waiting
-      //       b) deactivate the button while the operation is going on, otherwise user can click several times
-      //await handleMinerClaimTx();
     } else {
       openModal();
     }
@@ -57,9 +59,22 @@
 
   const confirmClaim = async () => {
     claimingInProcess = true;
-    await handleMinerClaimTx();
-    claimingInProcess = false;
-    showConfirm = false;
+    try {
+      await handleMinerClaimTx();
+    } catch (err) {
+      if (err.message) {
+        errorCode.set(err.message.code);
+        console.log($errorCode);
+        if (err.message.detail) {
+          errorDetail.set(err.message.detail);
+        }
+      } else {
+        errorCode.set("An unexpected error occurred");
+      }
+    } finally {
+      claimingInProcess = false;
+      showConfirm = false;
+    }
   };
 
   const handleConnect = async (event) => {
@@ -80,6 +95,8 @@
   const closeModal = () => {
     showModal = false;
     showConfirm = false;
+    errorCode.set(null);
+    errorDetail.set(null);
   };
 </script>
 
@@ -127,6 +144,10 @@
 
   {#if showConfirm}
     <DisclaimerModal on:select={confirmClaim} on:close={closeModal} />
+  {/if}
+
+  {#if $errorCode !== null}
+    <ErrorModal code={$errorCode} detail={$errorDetail} on:close={closeModal} />
   {/if}
 
   {#if claimingInProcess}
