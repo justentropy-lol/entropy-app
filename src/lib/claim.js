@@ -20,7 +20,7 @@ const getClaimTx = async (minerPubkey) => {
 
   if (httpRes.status === 400) {
     const errorData = await httpRes.json();
-    throw new Error(errorData.code);
+    throw { code: errorData.code, details: errorData.details || null };
   }
 
   if (httpRes.status != 200) {
@@ -42,14 +42,14 @@ const handleMinerClaimTx = async () => {
   const pubkey = getPublicKey().toBase58();
   try {
     const claimTx = await getClaimTx(pubkey);
+    console.log(claimTx);
+    await signAndSubmitTx(claimTx);
   } catch (error) {
+    console.log(error);
     if (error instanceof Error) {
       throw error;
     }
   }
-
-  console.log(claimTx);
-  await signAndSubmitTx(claimTx);
 };
 
 export { handleMinerClaimTx };
