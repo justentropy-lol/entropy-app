@@ -62,11 +62,12 @@
     try {
       await handleMinerClaimTx();
     } catch (err) {
-      if (err.message) {
-        errorCode.set(err.message.code);
+      console.log(err);
+      if (err.code) {
+        errorCode.set(err.code);
         console.log($errorCode);
-        if (err.message.detail) {
-          errorDetail.set(err.message.detail);
+        if (err.detail) {
+          errorDetail.set(err.detail);
         }
       } else {
         errorCode.set("An unexpected error occurred");

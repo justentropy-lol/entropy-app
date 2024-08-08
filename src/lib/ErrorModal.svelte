@@ -22,18 +22,18 @@
     class="flex flex-col items-center justify-around min-w-60 max-w-[60vw] bg-flamingo p-5 rounded-3xl shadow-lg font-display text-2xl text-center"
     on:click|stopPropagation
   >
-    {#if code === "ADDRESS_NOT_REGISTERED"}
-      No wallet found.
+    {#if code === "NOT_REGISTERED"}
+      No wallet found
     {:else if code === "CLAIM_EMPTY"}
-      There is nothing to claim right now.
+      There is nothing to claim right now
     {:else if code === "ENT_LOW_CURRENT"}
-      <p>Your balance is low by the following amount...</p>
-      <p>{detail} $ENT</p>
+      <p>Obey The Second Law...</p>
+      <p>Add {detail} $ENT</p>
     {:else if code === "ENT_LOW_RECENT"}
-      <p>Your balance was too low in the past seven days.</p>
-      <p>Please wait {detail}.</p>
+      <p>You broke The Second Law</p>
+      <p>Please wait {detail}</p>
     {:else if code === "CLAIM_PROCESSING"}
-      A claim is in process.
+      A claim is in process
     {/if}
   </div>
 </div>
