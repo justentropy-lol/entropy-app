@@ -20,7 +20,7 @@ const getClaimTx = async (minerPubkey) => {
 
   if (httpRes.status === 400) {
     const errorData = await httpRes.json();
-    throw { code: errorData.error, details: errorData.message || null };
+    throw { code: errorData.error, detail: errorData.message || null };
   }
 
   if (httpRes.status != 200) {
