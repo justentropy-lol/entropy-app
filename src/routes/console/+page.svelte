@@ -1,118 +1,170 @@
 <script>
-  import Footer from "$lib/Footer.svelte" 
-  import { browser } from '$app/environment';
-  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
+  import { activeModal } from "$lib/modals/modalControl.js";
+  import { signMsg, isWalletConnected } from "$lib/wallet/connect.js";
+  import LabelPair from "$lib/elements/labelPair.svelte";
 
-  const api_endpoint = import.meta.env.VITE_API_MINER_QUERY_ENDPOINT;
+  const generate_message_endpoint = import.meta.env
+    .VITE_API_GENERATE_MESSAGE_ENDPOINT;
+  const verify_signature_api_endpoint = import.meta.env
+    .VITE_API_VERIFY_SIGNATURE_ENDPOINT;
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
-  const urlSearchParams = browser ? new URLSearchParams(window.location.search) : undefined;
-  const urlName = urlSearchParams?.get("miner");
+  function getDate(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
-  const submit = blobUrl + "/assets/button_submit-00dEiJQcR1pzyfl804W8U0cBd73o1j.png";
+    let Year;
 
-  let input = '';
-  let result = '';
-  let errorMsg = '';
-  let latestValueHex = '';
-  let latestTimestampFormatted = '';
+    if (month > 9 || (month === 9 && day >= 1)) {
+      Year = year + 5509;
+    } else {
+      Year = year + 5508;
+    }
+
+    const formattedMonth = String(month).padStart(2, "0");
+    const formattedDay = String(day).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${Year}-${formattedMonth}-${formattedDay} ${hours}:${minutes}:${seconds}`;
+  }
+
+  const submit =
+    blobUrl + "/assets/button_connect-CFWhbxmaPvLxFxVeH17Y9rtXSMwRV9.png";
+
+  let result = "";
+  let errorMsg = "";
+  let latestValueHex = "";
+  let latestTimestampFormatted = "";
+  let minerName = "";
+  let consecutiveReports = 0;
   let valueMean = 0.5;
   let intervalMean = 0.0;
   let entropyMean = 1;
+  let rank = 0;
+  let totalRanked = 0;
+  let score = 0;
+  let ent_needed = 0;
+  let days_of_rewards = 0;
+  let to_claim = 0;
+  let days_since_violation = 0;
   let dataBoxDisplay = false;
-  let submitDisabled = false;
+  let dataReceived = false;
+  let message = null;
 
-  if (urlName) {
-    input = urlName;
-    handleSubmit();
-  }
+  $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
-  async function handleSubmit(e) {
-    e?.preventDefault();
+  onMount(async () => {
+    const response = await fetch(generate_message_endpoint, {
+      method: "POST",
+    });
+    message = await response.json();
+  });
 
+  const processResponse = (data) => {
+    errorMsg = "";
+    const valueLatest = BigInt(data.value_latest_str);
+    latestValueHex = `0x${valueLatest.toString(16)}`;
+    latestTimestampFormatted = getDate(data.timestamp_latest);
+    valueMean = data.value_mean;
+    entropyMean = -(
+      valueMean * Math.log2(valueMean) +
+      (1 - valueMean) * Math.log2(1 - valueMean)
+    ).toFixed(3);
+    minerName = data.miner_name;
+    consecutiveReports = data.consecutive_reports;
+    intervalMean = data.interval_mean.toFixed(3);
+    rank = data.rank;
+    totalRanked = data.total_ranked;
+    score = data.score.toFixed(3);
+    ent_needed = Number(data.ent_needed.toFixed(0)).toLocaleString("en-US");
+    days_of_rewards = data.days_of_rewards;
+    to_claim = Number(data.rewards_to_claim.toFixed(0)).toLocaleString("en-US");
+    days_since_violation = data.days_since_violation;
+    dataBoxDisplay = true;
+  };
+
+  const handleConnect = async () => {
     if (!submitDisabled) {
-      submitDisabled = true;
-      urlSearchParams.set("miner", input);
-      goto(`?${urlSearchParams.toString()}`);
+      if ($isWalletConnected) {
+        try {
+          const encodedPkg = await signMsg(message);
 
-      try {
-        const response = await fetch(api_endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ input }),
-        });
+          const response = await fetch(verify_signature_api_endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/octet-stream",
+            },
+            body: encodedPkg.buffer,
+          });
 
-        const data = await response.json();
-        processResponse(data);
-      } catch (error) {
-        result = `Error: ${error.message}`;
+          const data = await response.json();
+
+          if (response.ok) {
+            processResponse(data);
+            dataReceived = true;
+          } else {
+            if (data.error === "INVALID_ADDRESS") {
+              errorMsg =
+                "No miner found that corresponds to your SOL address";
+            } else {
+              errorMsg = "Signature invalid, try and refresh the console";
+            }
+          }
+        } catch (error) {
+          errorMsg = "Signature invalid, try and refresh the console";
+        }
+      } else {
+        activeModal.set("wallet");
       }
-      setTimeout(() => { submitDisabled = false; }, 700); 
     }
-  }
-
-  function processResponse(data) {
-    if (data.error) {
-      errorMsg = data.error;
-      dataBoxDisplay = false;
-    } else {
-      errorMsg = '';
-      const valueLatest = BigInt(data.value_latest_str);
-      latestValueHex = `0x${valueLatest.toString(16)}`;
-      const date = new Date(data.timestamp_latest);
-      latestTimestampFormatted = date.toLocaleString('en-US', { 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit', 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-      valueMean = data.value_mean
-      entropyMean = -(valueMean*Math.log2(valueMean)+(1-valueMean)*Math.log2(1-valueMean)).toFixed(3);
-      intervalMean = data.interval_mean.toFixed(3);
-      dataBoxDisplay = true;
-    }
-    result=data;
-  }
+  };
 </script>
 
-<div class="flex flex-col min-h-screen">
-  <form on:submit|preventDefault={handleSubmit} class="flex flex-col items-center pt-20 space-y-8 mb-8">
-    <input type="text" bind:value={input} name="input" required class="bg-transparent border-b-2 border-white outline-none text-center text-white text-2xl tracking-wider placeholder-white transition duration-300 w-full max-w-lg p-2" placeholder="enter your entropy miner name..."/>
-    <button type="submit" class="flex justify-around mt-4 px-4 py-2 transition duration-300">
-      <img alt="submit button" src={submit} class:disabled={submitDisabled} class="w-2/6 hover:opacity-75 active:opacity-50 transition duration-300"/>
-    </button>
-  </form>
-  {#if errorMsg}
-    <div class="font-display text-2xl text-center">
-      {errorMsg}
-    </div>
-  {/if}
-  <div id="result" class="flex-grow space-y-4 p-4 text-white text-2xl tracking-wider font-display max-w-md mx-auto whitespace-pre-wrap transition-opacity duration-500" style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay ? 'auto' : 'none'};">
-    <div>
-    Latest received:
-    <span class="font-sans">{latestValueHex}
-    at {latestTimestampFormatted}</span>
-    </div>
-    <div>
-    Mean entropy:
-    <span class="font-sans">{entropyMean} (normalized)</span>
-    </div>
-    <div>
-    Mean interval:
-    <span class="font-sans">{intervalMean} hours</span>
-    </div>
+<button type="submit"
+  class="flex justify-around mt-4 px-4 py-2 transition duration-300">
+  <img
+    alt="submit button"
+    src={submit}
+    on:click={handleConnect}
+    class="w-3/12 transition duration-300 active:opacity-50"
+    style="opacity: {submitDisabled ? 0.5 : 1}; pointer-events: {submitDisabled ? 'none' : 'auto'};"/>
+</button>
+{#if errorMsg}
+  <div class="font-display text-2xl text-center">
+    {errorMsg}
   </div>
-
-  <div class="flex items-center justify-center space-x-2 mb-4 text-md">
-    <Footer />
+{/if}
+<div
+  id="result"
+  class="flex-grow space-y-1 p-4 text-white text-xl tracking-wider font-sans max-w-xl mx-auto transition-opacity duration-500"
+  style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay
+    ? 'auto'
+    : 'none'};"
+>
+  <LabelPair label="Miner name:" desc={minerName} />
+  <LabelPair label="Latest value:" desc={latestValueHex} />
+  <LabelPair label="Latest receipt:" desc={latestTimestampFormatted} />
+  <LabelPair label="Mean entropy:" desc={entropyMean} />
+  <LabelPair label="Mean interval:" desc="{intervalMean} h" />
+  <LabelPair label="Consecutive reports:" desc={consecutiveReports} />
+  <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
+  <LabelPair label="Score:" desc={score} />
+  <LabelPair
+    label="Amount accumulated:"
+    desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
+  />
+  <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+  <div>
+    {#if days_since_violation}
+      {#if days_since_violation < 8}
+        No claim allowed. The Second Law was violated within the past {days_since_violation}
+        day(s).
+      {/if}
+    {/if}
   </div>
 </div>
-
-<style>
-  .disabled {
-    opacity: 0.5;
-  }
-</style>

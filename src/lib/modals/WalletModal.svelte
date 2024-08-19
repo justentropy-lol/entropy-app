@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { supportedWallets } from "./wallet.js";
+  import { supportedWallets, connectWallet } from "$lib/wallet/connect.js";
 
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
@@ -19,9 +19,14 @@
 
   const dispatch = createEventDispatcher();
 
-  const selectWallet = (wallet) => {
-    dispatch("select", { wallet: wallet });
+  const handleConnect = async (wallet) => {
+    await connectWallet(wallet);
+    dispatch("close");
   };
+
+  // const selectWallet = (wallet) => {
+  //   dispatch("select", { wallet: wallet });
+  // };
 </script>
 
 <div
@@ -34,7 +39,7 @@
   >
     {#each supportedWallets as wallet}
       <button
-        on:click={() => selectWallet(wallet)}
+        on:click={() => handleConnect(wallet)}
         class="hover:opacity-75 active:opacity-50"
       >
         <img src={walletImage[wallet]} />

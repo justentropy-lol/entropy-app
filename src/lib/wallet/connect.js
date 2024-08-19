@@ -5,19 +5,20 @@
  * - try browser/profile without some or all wallets
  * Done manually, passing. Could be automated at some point.
  */
+import { writable } from "svelte/store";
 const supportedWallets = ["phantom", "solflare", "backpack"];
 
 // don't rely on `window.solana` as unclear which user wallet it refers
 // https://docs.phantom.app/developer-powertools/wallet-standard
 // https://github.com/wallet-standard/wallet-standard/blob/master/DESIGN.md
 let _provider = null;
+const isWalletConnected = writable(false);
 
 const setProvider = (walletName) => {
   switch (walletName) {
     case "phantom":
       if (window.phantom) {
         _provider = window.phantom.solana;
-        console.log("connected wallet: phantom");
       } else {
         window.open("https://phantom.app/", "_blank");
       }
@@ -25,7 +26,6 @@ const setProvider = (walletName) => {
     case "solflare":
       if (window.solflare) {
         _provider = window.solflare;
-        console.log("connected wallet: solflare");
       } else {
         window.open("https://solflare.com/", "_blank");
       }
@@ -33,35 +33,50 @@ const setProvider = (walletName) => {
     case "backpack":
       if (window.backpack) {
         _provider = window.backpack;
-        console.log("connected wallet: backpack");
       } else {
         window.open("https://backpack.app/", "_blank");
       }
+      break;
+    case "null":
+      _provider = null;
       break;
     default:
       console.error("Error connecting a Solana wallet");
   }
 };
 
-const checkIfWalletConnectedSetProvider = () => {
+const checkIfWalletConnectedSetProvider = async () => {
   for (const wallet of supportedWallets) {
     switch (wallet) {
       case "phantom":
-        if (window.phantom && window.phantom.solana.isConnected) {
+        if (window.phantom) {
           setProvider("phantom");
-          return true;
+          await _provider.connect({ onlyIfTrusted: true });
+          if (checkIfWalletConnected()) {
+            return true;
+          } else {
+            setProvider("null");
+          }
         }
         break;
       case "solflare":
         if (window.solflare && window.solflare.isConnected) {
           setProvider("solflare");
-          return true;
+          if (checkIfWalletConnected()) {
+            return true;
+          } else {
+            setProvider("null");
+          }
         }
         break;
       case "backpack":
         if (window.backpack && window.backpack.isConnected) {
           setProvider("backpack");
-          return true;
+          if (checkIfWalletConnected()) {
+            return true;
+          } else {
+            setProvider("null");
+          }
         }
         break;
     }
@@ -70,7 +85,7 @@ const checkIfWalletConnectedSetProvider = () => {
 };
 
 const getPublicKey = () => {
-  if (_provider.isConnected) {
+  if (_provider && _provider.isConnected) {
     return _provider.publicKey;
   }
 };
@@ -80,21 +95,49 @@ const connectWallet = async (wallet) => {
 
   if (!checkIfWalletConnected()) {
     await _provider.connect();
+    checkIfWalletConnected();
   }
 };
 
 const disconnectWallet = async () => {
   if (checkIfWalletConnected()) {
     await _provider.disconnect();
+    checkIfWalletConnected();
   }
 };
 
 const checkIfWalletConnected = () => {
-  return _provider.isConnected;
+  const isConnected = _provider ? _provider.isConnected : false;
+  isWalletConnected.set(isConnected);
+  return isConnected;
+};
+
+const signMsg = async (msg) => {
+  if (_provider && _provider.isConnected) {
+    try {
+      const encodedMessage = new TextEncoder().encode(msg);
+      const signedMessage = await _provider.signMessage(encodedMessage, "utf8");
+
+      const encodedSignature = signedMessage.signature;
+      const encodedKey = signedMessage.publicKey.toBytes();
+
+      const totalLength = 32 + 64 + encodedMessage.length;
+
+      // Create a new Uint8Array to hold all the data
+      const combinedArray = new Uint8Array(totalLength);
+      combinedArray.set(encodedKey, 0);
+      combinedArray.set(encodedSignature, 32);
+      combinedArray.set(encodedMessage, 96);
+
+      return combinedArray;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 };
 
 const signAndSubmitTx = async (transaction) => {
-  if (_provider.isConnected) {
+  if (_provider && _provider.isConnected) {
     try {
       // @solana/wallet-adapter requires us to set up our own RPC connection.
       // Luckily most browser wallets (e.g. Phantom, Solflare, Backpack) expose a `signAndSendTransaction`
@@ -113,7 +156,9 @@ export {
   connectWallet,
   disconnectWallet,
   checkIfWalletConnected,
+  signMsg,
   signAndSubmitTx,
   getPublicKey,
+  isWalletConnected,
   supportedWallets,
 };

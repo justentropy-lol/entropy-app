@@ -4,7 +4,7 @@ const { Buffer } = buffer;
 
 import * as web3 from "@solana/web3.js";
 
-import { getPublicKey, signAndSubmitTx } from "./wallet";
+import { getPublicKey, signAndSubmitTx } from "./connect.js";
 
 const getClaimTx = async (minerPubkey) => {
   const oracleHost = import.meta.env.VITE_ORACLE_HOST;
