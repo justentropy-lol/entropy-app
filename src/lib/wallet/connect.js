@@ -47,38 +47,47 @@ const setProvider = (walletName) => {
 
 const checkIfWalletConnectedSetProvider = async () => {
   for (const wallet of supportedWallets) {
-    switch (wallet) {
-      case "phantom":
-        if (window.phantom) {
-          setProvider("phantom");
-          await _provider.connect({ onlyIfTrusted: true });
-          if (checkIfWalletConnected()) {
-            return true;
-          } else {
-            setProvider("null");
+    if (!_provider) {
+      switch (wallet) {
+        case "phantom":
+          if (window.phantom) {
+            setProvider("phantom");
+            try {
+              await _provider.connect({ onlyIfTrusted: true });
+            } catch (error) {
+              // do nothing
+            } finally {
+              if (checkIfWalletConnected()) {
+                return true;
+              } else {
+                setProvider("null");
+              }
+            }
           }
-        }
-        break;
-      case "solflare":
-        if (window.solflare && window.solflare.isConnected) {
-          setProvider("solflare");
-          if (checkIfWalletConnected()) {
-            return true;
-          } else {
-            setProvider("null");
+          break;
+        case "solflare":
+          if (window.solflare && window.solflare.isConnected) {
+            setProvider("solflare");
+            //await _provider.connect();
+            if (checkIfWalletConnected()) {
+              return true;
+            } else {
+              setProvider("null");
+            }
           }
-        }
-        break;
-      case "backpack":
-        if (window.backpack && window.backpack.isConnected) {
-          setProvider("backpack");
-          if (checkIfWalletConnected()) {
-            return true;
-          } else {
-            setProvider("null");
+          break;
+        case "backpack":
+          if (window.backpack && window.backpack.isConnected) {
+            setProvider("backpack");
+            //await _provider.connect();
+            if (checkIfWalletConnected()) {
+              return true;
+            } else {
+              setProvider("null");
+            }
           }
-        }
-        break;
+          break;
+      }
     }
   }
   return false;
@@ -116,10 +125,10 @@ const signMsg = async (msg) => {
   if (_provider && _provider.isConnected) {
     try {
       const encodedMessage = new TextEncoder().encode(msg);
-      const signedMessage = await _provider.signMessage(encodedMessage, "utf8");
+      const signedMessage = await _provider.signMessage(encodedMessage);
 
       const encodedSignature = signedMessage.signature;
-      const encodedKey = signedMessage.publicKey.toBytes();
+      const encodedKey = getPublicKey().toBytes();
 
       const totalLength = 32 + 64 + encodedMessage.length;
 
