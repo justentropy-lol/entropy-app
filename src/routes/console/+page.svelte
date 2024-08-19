@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { activeModal } from "$lib/modals/modalControl.js";
   import { signMsg, isWalletConnected } from "$lib/wallet/connect.js";
-  import LabelPair from "$lib/elements/labelPair.svelte";
+  import LabelPair from "$lib/elements/LabelPair.svelte";
 
   const generate_message_endpoint = import.meta.env
     .VITE_API_GENERATE_MESSAGE_ENDPOINT;
@@ -109,8 +109,7 @@
             dataReceived = true;
           } else {
             if (data.error === "INVALID_ADDRESS") {
-              errorMsg =
-                "No miner found that corresponds to your SOL address";
+              errorMsg = "No miner found that corresponds to your SOL address";
             } else {
               errorMsg = "Signature invalid, try and refresh the console";
             }
@@ -125,14 +124,19 @@
   };
 </script>
 
-<button type="submit"
-  class="flex justify-around mt-4 px-4 py-2 transition duration-300">
+<button
+  type="submit"
+  class="flex justify-around mt-4 px-4 py-2 transition duration-300"
+>
   <img
     alt="submit button"
     src={submit}
     on:click={handleConnect}
     class="w-3/12 transition duration-300 active:opacity-50"
-    style="opacity: {submitDisabled ? 0.5 : 1}; pointer-events: {submitDisabled ? 'none' : 'auto'};"/>
+    style="opacity: {submitDisabled ? 0.5 : 1}; pointer-events: {submitDisabled
+      ? 'none'
+      : 'auto'};"
+  />
 </button>
 {#if errorMsg}
   <div class="font-display text-2xl text-center">
