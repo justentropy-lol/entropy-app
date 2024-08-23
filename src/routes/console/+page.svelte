@@ -91,6 +91,7 @@
   const handleConnect = async () => {
     if (!submitDisabled) {
       if ($isWalletConnected) {
+        dataReceived = true;
         try {
           const encodedPkg = await signMsg(message);
 
@@ -106,8 +107,8 @@
 
           if (response.ok) {
             processResponse(data);
-            dataReceived = true;
           } else {
+            dataReceived = false;
             if (data.error === "INVALID_ADDRESS") {
               errorMsg = "No miner found that corresponds to your SOL address";
             } else {
@@ -115,6 +116,7 @@
             }
           }
         } catch (error) {
+          dataReceived = false;
           errorMsg = "Signature invalid, try and refresh the console";
         }
       } else {

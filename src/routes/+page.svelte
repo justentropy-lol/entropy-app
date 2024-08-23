@@ -31,6 +31,7 @@
       activeModal.set("error");
     } finally {
       claimingInProcess = false;
+      activeModal.set(null);
     }
   };
 
