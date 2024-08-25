@@ -36,25 +36,45 @@
   const submit =
     blobUrl + "/assets/button_connect-CFWhbxmaPvLxFxVeH17Y9rtXSMwRV9.png";
 
-  let result = "";
   let errorMsg = "";
-  let latestValueHex = "";
-  let latestTimestampFormatted = "";
-  let minerName = "";
-  let consecutiveReports = 0;
-  let valueMean = 0.5;
-  let intervalMean = 0.0;
-  let entropyMean = 1;
-  let rank = 0;
-  let totalRanked = 0;
-  let score = 0;
-  let ent_needed = 0;
-  let days_of_rewards = 0;
-  let to_claim = 0;
-  let days_since_violation = 0;
   let dataBoxDisplay = false;
   let dataReceived = false;
   let message = null;
+
+  let data = [];
+  let currentPage = 0;
+  $: totalPages = data.length;
+  $: currentData = totalPages ? data[currentPage] : null;
+  $: latestValueHex = currentData
+    ? `0x${BigInt(currentData.value_latest_str).toString(16)}`
+    : null;
+  $: latestTimestampFormatted = currentData
+    ? getDate(currentData.timestamp_latest)
+    : null;
+  $: valueMean = currentData ? currentData.value_mean : null;
+  $: entropyMean = currentData
+    ? -(
+        valueMean * Math.log2(valueMean) +
+        (1 - valueMean) * Math.log2(1 - valueMean)
+      ).toFixed(3)
+    : null;
+  $: minerName = currentData ? currentData.miner_name : null;
+  $: consecutiveReports = currentData ? currentData.consecutive_reports : null;
+  $: intervalMean = currentData ? currentData.interval_mean.toFixed(3) : null;
+  $: rank = currentData ? currentData.rank : null;
+  $: totalRanked = currentData ? currentData.total_ranked : null;
+  $: score = currentData ? currentData.score.toFixed(3) : null;
+  $: ent_needed = currentData
+    ? Number(currentData.ent_needed.toFixed(0)).toLocaleString("en-US")
+    : null;
+  $: days_of_rewards = currentData ? currentData.days_of_rewards : null;
+  $: to_claim = currentData
+    ? Number(currentData.rewards_to_claim.toFixed(0)).toLocaleString("en-US")
+    : null;
+  $: days_since_violation = currentData
+    ? currentData.days_since_violation
+    : null;
+  $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
 
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
@@ -63,32 +83,19 @@
       method: "POST",
     });
     message = await response.json();
-  });
 
-  const processResponse = (data) => {
-    errorMsg = "";
-    const valueLatest = BigInt(data[0].value_latest_str);
-    latestValueHex = `0x${valueLatest.toString(16)}`;
-    latestTimestampFormatted = getDate(data[0].timestamp_latest);
-    valueMean = data[0].value_mean;
-    entropyMean = -(
-      valueMean * Math.log2(valueMean) +
-      (1 - valueMean) * Math.log2(1 - valueMean)
-    ).toFixed(3);
-    minerName = data[0].miner_name;
-    consecutiveReports = data[0].consecutive_reports;
-    intervalMean = data[0].interval_mean.toFixed(3);
-    rank = data[0].rank;
-    totalRanked = data[0].total_ranked;
-    score = data[0].score.toFixed(3);
-    ent_needed = Number(data[0].ent_needed.toFixed(0)).toLocaleString("en-US");
-    days_of_rewards = data[0].days_of_rewards;
-    to_claim = Number(data[0].rewards_to_claim.toFixed(0)).toLocaleString(
-      "en-US"
-    );
-    days_since_violation = data[0].days_since_violation;
-    dataBoxDisplay = true;
-  };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("click", handleTouch);
+    window.addEventListener("doubleclick", handleTouch);
+    window.addEventListener("touchstart", handleTouch);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("click", handleTouch);
+      window.removeEventListener("doubleclick", handleTouch);
+      window.removeEventListener("touchstart", handleTouch);
+    };
+  });
 
   const handleConnect = async () => {
     if (!submitDisabled) {
@@ -105,10 +112,13 @@
             body: encodedPkg.buffer,
           });
 
-          const data = await response.json();
+          data = await response.json();
 
           if (response.ok) {
-            processResponse(data);
+            currentPage = 0;
+            totalPages = data.length;
+            errorMsg = "";
+            dataBoxDisplay = true;
           } else {
             dataReceived = false;
             if (data.error === "INVALID_ADDRESS") {
@@ -126,6 +136,39 @@
       }
     }
   };
+
+  function changePage(direction) {
+    if (currentPage + direction >= 0 && currentPage + direction < totalPages) {
+      currentPage += direction;
+    }
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === "ArrowUp") {
+      changePage(-1);
+    } else if (event.key === "ArrowDown") {
+      changePage(1);
+    }
+  }
+
+  function handleTouch(event) {
+    const resultDiv = document.getElementById("result");
+    const bottomDiv = document.getElementById("bottom");
+    const touchY = event.touches ? event.touches[0].clientY : event.clientY;
+
+    const bbResult = resultDiv.getBoundingClientRect();
+    const bbBotom = bottomDiv.getBoundingClientRect();
+    const divHeight = bbResult.bottom - bbResult.top;
+
+    if (touchY >= bbResult.top && touchY <= bbResult.top + divHeight * 0.25) {
+      changePage(-1);
+    } else if (
+      touchY >= bbResult.bottom - divHeight * 0.33 &&
+      touchY <= bbBotom.bottom
+    ) {
+      changePage(1);
+    }
+  }
 </script>
 
 <button
@@ -149,12 +192,12 @@
 {/if}
 <div
   id="result"
-  class="flex-grow space-y-1 p-4 text-white text-xl tracking-wider font-sans max-w-xl mx-auto transition-opacity duration-500"
+  class="flex-none space-y-1 p-4 text-white sm:text-lg md:text-xl tracking-wider font-sans w-9/12 max-w-lg mx-auto transition-opacity duration-500"
   style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay
     ? 'auto'
     : 'none'};"
 >
-  <LabelPair label="Miner name:" desc={minerName} />
+  <LabelPair label="Miner{displayPage}:" desc={minerName} />
   <LabelPair label="Latest value:" desc={latestValueHex} />
   <LabelPair label="Latest receipt:" desc={latestTimestampFormatted} />
   <LabelPair label="Mean entropy:" desc={entropyMean} />
@@ -176,3 +219,10 @@
     {/if}
   </div>
 </div>
+<div id="bottom" class="flex-grow"></div>
+
+<style>
+  #result {
+    transition: opacity 2s ease-in-out;
+  }
+</style>
