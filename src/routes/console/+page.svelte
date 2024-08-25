@@ -86,14 +86,10 @@
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("click", handleTouch);
-    window.addEventListener("doubleclick", handleTouch);
-    window.addEventListener("touchstart", handleTouch);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("click", handleTouch);
-      window.removeEventListener("doubleclick", handleTouch);
-      window.removeEventListener("touchstart", handleTouch);
     };
   });
 
