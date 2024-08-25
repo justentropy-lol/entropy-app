@@ -67,24 +67,26 @@
 
   const processResponse = (data) => {
     errorMsg = "";
-    const valueLatest = BigInt(data.value_latest_str);
+    const valueLatest = BigInt(data[0].value_latest_str);
     latestValueHex = `0x${valueLatest.toString(16)}`;
-    latestTimestampFormatted = getDate(data.timestamp_latest);
-    valueMean = data.value_mean;
+    latestTimestampFormatted = getDate(data[0].timestamp_latest);
+    valueMean = data[0].value_mean;
     entropyMean = -(
       valueMean * Math.log2(valueMean) +
       (1 - valueMean) * Math.log2(1 - valueMean)
     ).toFixed(3);
-    minerName = data.miner_name;
-    consecutiveReports = data.consecutive_reports;
-    intervalMean = data.interval_mean.toFixed(3);
-    rank = data.rank;
-    totalRanked = data.total_ranked;
-    score = data.score.toFixed(3);
-    ent_needed = Number(data.ent_needed.toFixed(0)).toLocaleString("en-US");
-    days_of_rewards = data.days_of_rewards;
-    to_claim = Number(data.rewards_to_claim.toFixed(0)).toLocaleString("en-US");
-    days_since_violation = data.days_since_violation;
+    minerName = data[0].miner_name;
+    consecutiveReports = data[0].consecutive_reports;
+    intervalMean = data[0].interval_mean.toFixed(3);
+    rank = data[0].rank;
+    totalRanked = data[0].total_ranked;
+    score = data[0].score.toFixed(3);
+    ent_needed = Number(data[0].ent_needed.toFixed(0)).toLocaleString("en-US");
+    days_of_rewards = data[0].days_of_rewards;
+    to_claim = Number(data[0].rewards_to_claim.toFixed(0)).toLocaleString(
+      "en-US"
+    );
+    days_since_violation = data[0].days_since_violation;
     dataBoxDisplay = true;
   };
 
