@@ -201,19 +201,23 @@
   <LabelPair label="Consecutive reports:" desc={consecutiveReports} />
   <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
   <LabelPair label="Score:" desc={score} />
-  <LabelPair
-    label="Amount accumulated:"
-    desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
-  />
-  <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
-  <div>
-    {#if days_since_violation}
-      {#if days_since_violation < 8}
-        No claim allowed. The Second Law was violated within the past {days_since_violation}
-        day(s).
+
+  {#if to_claim}
+    <LabelPair
+      label="Amount accumulated:"
+      desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
+    />
+    <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+
+    <div>
+      {#if days_since_violation}
+        {#if days_since_violation < 8}
+          No claim allowed. The Second Law was violated within the past {days_since_violation}
+          day(s).
+        {/if}
       {/if}
-    {/if}
-  </div>
+    </div>
+  {/if}
 </div>
 <div id="bottom" class="flex-grow"></div>
 
