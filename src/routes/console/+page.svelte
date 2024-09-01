@@ -56,7 +56,7 @@
     ? -(
         valueMean * Math.log2(valueMean) +
         (1 - valueMean) * Math.log2(1 - valueMean)
-      ).toFixed(3)
+      ).toFixed(6)
     : null;
   $: minerName = currentData ? currentData.miner_name : null;
   $: consecutiveReports = currentData ? currentData.consecutive_reports : null;
@@ -199,8 +199,10 @@
   <LabelPair label="Mean entropy:" desc={entropyMean} />
   <LabelPair label="Mean interval:" desc="{intervalMean} h" />
   <LabelPair label="Consecutive reports:" desc={consecutiveReports} />
-  <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
-  <LabelPair label="Score:" desc={score} />
+  {#if rank > 0}
+    <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
+    <LabelPair label="Score:" desc={score} />
+  {/if}
 
   {#if to_claim}
     <LabelPair
@@ -209,14 +211,20 @@
     />
     <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
 
-    <div>
-      {#if days_since_violation}
-        {#if days_since_violation < 8}
-          No claim allowed. The Second Law was violated within the past {days_since_violation}
-          day(s).
-        {/if}
-      {/if}
-    </div>
+    {#if rank === 0}
+      <div>
+        Miner was unresponsive during the most recent epoch and was not ranked.
+      </div>
+    {/if}
+
+    {#if days_since_violation && days_since_violation < 8}
+      <div>
+        No claim allowed. The Second Law was violated within the past {days_since_violation}
+        day(s).
+      </div>
+    {/if}
+  {:else}
+    <div>Miner has reported but not yet been ranked.</div>
   {/if}
 </div>
 <div id="bottom" class="flex-grow"></div>
