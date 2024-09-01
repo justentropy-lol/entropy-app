@@ -59,6 +59,9 @@
       ).toFixed(6)
     : null;
   $: minerName = currentData ? currentData.miner_name : null;
+  $: solAddy = currentData
+    ? currentData.sol_addy.slice(0, 4) + "..." + currentData.sol_addy.slice(-4)
+    : null;
   $: consecutiveReports = currentData ? currentData.consecutive_reports : null;
   $: intervalMean = currentData ? currentData.interval_mean.toFixed(3) : null;
   $: rank = currentData ? currentData.rank : null;
@@ -71,11 +74,26 @@
   $: to_claim = currentData
     ? Number(currentData.rewards_to_claim.toFixed(0)).toLocaleString("en-US")
     : null;
-  $: days_since_violation = currentData
-    ? currentData.days_since_violation
+  $: brokeEntropyTimestampFormatted = currentData
+    ? getDate(currentData.timestamp_broke_entropy)
+    : null;
+  $: days_since_violation = brokeEntropyTimestampFormatted
+    ? Math.floor(
+        (new Date() - new Date(currentData.timestamp_broke_entropy)) /
+          (1000 * 60 * 60 * 24)
+      )
+    : null;
+  $: brokeCorollaryTimestampFormatted = currentData
+    ? getDate(currentData.timestamp_broke_corollary)
+    : null;
+  $: days_since_violation_corollary = brokeCorollaryTimestampFormatted
+    ? Math.floor(
+        (new Date() - new Date(currentData.timestamp_broke_corollary)) /
+          (1000 * 60 * 60 * 24)
+      )
     : null;
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
-
+  $: receivedAirdrop = currentData ? currentData.has_received_airdrop : null;
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
   onMount(async () => {
@@ -194,6 +212,7 @@
     : 'none'};"
 >
   <LabelPair label="Miner{displayPage}:" desc={minerName} />
+  <LabelPair label="Address:" desc={solAddy} />
   <LabelPair label="Latest value:" desc={latestValueHex} />
   <LabelPair label="Latest receipt:" desc={latestTimestampFormatted} />
   <LabelPair label="Mean entropy:" desc={entropyMean} />
@@ -217,14 +236,22 @@
       </div>
     {/if}
 
-    {#if days_since_violation && days_since_violation < 8}
+    {#if brokeEntropyTimestampFormatted && days_since_violation < 7}
       <div>
-        No claim allowed. The Second Law was violated within the past {days_since_violation}
-        day(s).
+        No claim allowed. The Second Law was violated on {brokeEntropyTimestampFormatted}.
+      </div>
+    {/if}
+    {#if receivedAirdrop !== null && receivedAirdrop === 1 && days_since_violation_corollary < 7}
+      <div>
+        No claim allowed. The XNET Airdrop Corollary was violated on {brokeCorollaryTimestampFormatted}.
       </div>
     {/if}
   {:else}
     <div>Miner has reported but not yet been ranked.</div>
+  {/if}
+
+  {#if receivedAirdrop !== null && receivedAirdrop === 0}
+    <LabelPair label="$XNET airdrop:" desc="You are eligible!" />
   {/if}
 </div>
 <div id="bottom" class="flex-grow"></div>
