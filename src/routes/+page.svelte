@@ -19,10 +19,8 @@
       await handleMinerClaimTx();
       activeModal.set(null);
     } catch (err) {
-      console.log(err);
       if (err.code) {
         errorCode = err.code;
-        console.log(errorCode);
         if (err.detail) {
           errorDetail = err.detail;
         }
