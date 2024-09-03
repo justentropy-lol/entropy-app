@@ -67,6 +67,9 @@
   $: rank = currentData ? currentData.rank : null;
   $: totalRanked = currentData ? currentData.total_ranked : null;
   $: score = currentData ? currentData.score.toFixed(3) : null;
+  $: ent_burned = currentData
+    ? Number(currentData.ent_burned.toFixed(0)).toLocaleString("en-US")
+    : null;
   $: ent_needed = currentData
     ? Number(currentData.ent_needed.toFixed(0)).toLocaleString("en-US")
     : null;
@@ -228,6 +231,7 @@
       label="Amount accumulated:"
       desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
     />
+    <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
     <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
 
     {#if rank === 0}

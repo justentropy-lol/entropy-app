@@ -26,12 +26,17 @@
       No wallet found
     {:else if code === "CLAIM_EMPTY"}
       There is nothing to claim right now
-    {:else if code === "ENT_LOW_CURRENT"}
+    {:else if code === "BANNED_MINER"}
+      Your credentials have been deactivated
+    {:else if code === "TRY_AGAIN_LATER"}
+      <p>System under maintenance.</p>
+      <p>Try again later.</p>
+    {:else if code === "SECOND_LAW_BROKEN_CURRENT"}
       <p>Obey The Second Law...</p>
-      <p>Add {detail} $ENT</p>
-    {:else if code === "ENT_LOW_RECENT"}
-      <p>You broke The Second Law</p>
-      <p>Please wait {detail}</p>
+      <p>Check console for details.</p>
+    {:else if code === "SECOND_LAW_BROKEN_RECENT"}
+      <p>You broke The Second Law.</p>
+      <p>Check console for details.</p>
     {:else if code === "CLAIM_PROCESSING"}
       A claim is in process
     {/if}

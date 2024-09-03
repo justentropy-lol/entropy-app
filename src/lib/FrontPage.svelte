@@ -1,9 +1,6 @@
 <script>
   import { activeModal } from "./modals/modalControl.js";
-  import {
-    checkIfWalletConnected,
-    isWalletConnected,
-  } from "./wallet/connect.js";
+  import { isWalletConnected } from "./wallet/connect.js";
 
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
@@ -18,13 +15,6 @@
     blobUrl + "/assets/list_proud-Pl0lD0rbwghrIXxmhWUDy89qBYNtE8.png";
   const tokenomics =
     blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
-
-  // let refHeight = 10;
-  // let mtBannerMult = 1 / 3;
-  // let mtButtonMult = 1 / 3;
-  // let mtExplainerMult = 1.2;
-  // let yExplainer = 1 / 2;
-  // let mtSocialsMult = 1.5;
 
   const discordLink = "https://discord.gg/puredepin";
 
@@ -60,7 +50,9 @@
   </button>
 </div>
 
-<div class="flex-col space-y-4 mt-4 mb-4 justify-around w-7/12 min-w-72 max-w-md">
+<div
+  class="flex-col space-y-4 mt-4 mb-4 justify-around w-7/12 min-w-72 max-w-md"
+>
   <h3 class="hidden">
     ENTROPY is the perfect DePIN:
     <ul>

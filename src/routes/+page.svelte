@@ -8,8 +8,8 @@
   import ClaimModal from "$lib/modals/ClaimModal.svelte";
   import ErrorModal from "$lib/modals/ErrorModal.svelte";
 
-  let errorCode = writable(null);
-  let errorDetail = writable(null);
+  $: errorCode = null;
+  $: errorDetail = null;
 
   let claimingInProcess = false;
 
@@ -17,21 +17,21 @@
     claimingInProcess = true;
     try {
       await handleMinerClaimTx();
+      activeModal.set(null);
     } catch (err) {
       console.log(err);
       if (err.code) {
-        errorCode.set(err.code);
-        console.log($errorCode);
+        errorCode = err.code;
+        console.log(errorCode);
         if (err.detail) {
-          errorDetail.set(err.detail);
+          errorDetail = err.detail;
         }
       } else {
-        errorCode.set("An unexpected error occurred");
+        errorCode = "UNEXPECTED";
       }
       activeModal.set("error");
     } finally {
       claimingInProcess = false;
-      activeModal.set(null);
     }
   };
 
@@ -46,7 +46,7 @@
   <ClaimModal on:select={confirmClaim} on:close={closeModal} />
 {/if}
 {#if $activeModal === "error"}
-  <ErrorModal code={$errorCode} detail={$errorDetail} on:close={closeModal} />
+  <ErrorModal code={errorCode} detail={errorDetail} on:close={closeModal} />
 {/if}
 
 {#if claimingInProcess}
