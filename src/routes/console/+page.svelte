@@ -80,23 +80,34 @@
   $: brokeEntropyTimestampFormatted = currentData
     ? getDate(currentData.timestamp_broke_entropy)
     : null;
-  $: days_since_violation = brokeEntropyTimestampFormatted
+  $: hours_since_violation = brokeEntropyTimestampFormatted
     ? Math.floor(
         (new Date() - new Date(currentData.timestamp_broke_entropy)) /
-          (1000 * 60 * 60 * 24)
+          (1000 * 60 * 60)
       )
     : null;
-  $: brokeCorollaryTimestampFormatted = currentData
-    ? getDate(currentData.timestamp_broke_corollary)
+  $: brokeXnetCorollaryTimestampFormatted = currentData
+    ? getDate(currentData.xnet_timestamp_broke_corollary)
     : null;
-  $: days_since_violation_corollary = brokeCorollaryTimestampFormatted
+  $: hours_since_violation_xnet_corollary = brokeXnetCorollaryTimestampFormatted
     ? Math.floor(
-        (new Date() - new Date(currentData.timestamp_broke_corollary)) /
-          (1000 * 60 * 60 * 24)
+        (new Date() - new Date(currentData.xnet_timestamp_broke_corollary)) /
+          (1000 * 60 * 60)
+      )
+    : null;
+  $: brokeTokeCorollaryTimestampFormatted = currentData
+    ? getDate(currentData.toke_timestamp_broke_corollary)
+    : null;
+  $: hours_since_violation_toke_corollary = brokeTokeCorollaryTimestampFormatted
+    ? Math.floor(
+        (new Date() - new Date(currentData.toke_timestamp_broke_corollary)) /
+          (1000 * 60 * 60)
       )
     : null;
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
-  $: receivedAirdrop = currentData ? currentData.has_received_airdrop : null;
+  $: receivedXnetAirdrop = currentData
+    ? currentData.xnet_has_received_airdrop
+    : null;
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
   onMount(async () => {
@@ -240,21 +251,47 @@
       </div>
     {/if}
 
-    {#if brokeEntropyTimestampFormatted && days_since_violation < 7}
-      <div>
-        No claim allowed. The Second Law was violated on {brokeEntropyTimestampFormatted}.
-      </div>
+    {#if brokeEntropyTimestampFormatted && hours_since_violation < 168}
+      {#if hours_since_violation > 4}
+        <div>
+          No claim allowed. The Second Law was last violated on {brokeEntropyTimestampFormatted}.
+        </div>
+      {:else}
+        <div>
+          You are or have recently been in violation of The Second Law. When you
+          come into compliance, please wait 6 hours before checking.
+        </div>
+      {/if}
     {/if}
-    {#if receivedAirdrop !== null && receivedAirdrop === 1 && days_since_violation_corollary < 7}
-      <div>
-        No claim allowed. The XNET Airdrop Corollary was violated on {brokeCorollaryTimestampFormatted}.
-      </div>
+    {#if brokeXnetCorollaryTimestampFormatted && hours_since_violation_xnet_corollary < 168}
+      {#if hours_since_violation_xnet_corollary > 4}
+        <div>
+          No claim allowed. The $XNET Airdrop Corollary was last violated on {brokeXnetCorollaryTimestampFormatted}.
+        </div>
+      {:else}
+        <div>
+          You are currently in violation of The $XNET Airdrop Corollary. When
+          you come into compliance, please wait 6 hours before checking.
+        </div>
+      {/if}
+    {/if}
+    {#if brokeTokeCorollaryTimestampFormatted && hours_since_violation_toke_corollary < 168}
+      {#if hours_since_violation_toke_corollary > 4}
+        <div>
+          No claim allowed. The $TOKE Airdrop Corollary wa last violated on {brokeTokeCorollaryTimestampFormatted}.
+        </div>
+      {:else}
+        <div>
+          You are currently in violation of The $TOKE Airdrop Corollary. When
+          you come into compliance, please wait 6 hours before checking.
+        </div>
+      {/if}
     {/if}
   {:else}
-    <div>Miner has reported but not yet been ranked.</div>
+    <div>Miner has reported but has not yet been ranked.</div>
   {/if}
 
-  {#if receivedAirdrop !== null && receivedAirdrop === 0}
+  {#if receivedXnetAirdrop !== null && receivedXnetAirdrop === 0}
     <LabelPair label="$XNET airdrop:" desc="You are eligible!" />
   {/if}
 </div>
