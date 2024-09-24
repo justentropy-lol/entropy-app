@@ -1,6 +1,7 @@
 <script>
   export let discordLink = "https://discord.gg/puredepin";
   export let twitterLink = "https://twitter.com/justentropylol";
+  export let tiktokLink = "https://www.tiktok.com/@justentropylol";
   export let githubLink = "https://github.com/justentropy-lol";
   export let docsLink = "https://docs.puredepin.com/";
   export let explorerLink = "/explorer";
@@ -18,6 +19,9 @@
 >
 <a href={twitterLink} target="_blank" class="hover:opacity-75 active:opacity-50"
   ><i class="fab fa-x-twitter"></i></a
+>
+<a href={tiktokLink} target="_blank" class="hover:opacity-75 active:opacity-50"
+  ><i class="fa-brands fa-tiktok"></i></a
 >
 <a href={githubLink} target="_blank" class="hover:opacity-75 active:opacity-50"
   ><i class="fa-brands fa-github"></i></a
