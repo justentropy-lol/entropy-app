@@ -86,15 +86,6 @@
           (1000 * 60 * 60)
       )
     : null;
-  $: brokeXnetCorollaryTimestampFormatted = currentData
-    ? getDate(currentData.xnet_timestamp_broke_corollary)
-    : null;
-  $: hours_since_violation_xnet_corollary = brokeXnetCorollaryTimestampFormatted
-    ? Math.floor(
-        (new Date() - new Date(currentData.xnet_timestamp_broke_corollary)) /
-          (1000 * 60 * 60)
-      )
-    : null;
   $: brokeTokeCorollaryTimestampFormatted = currentData
     ? getDate(currentData.toke_timestamp_broke_corollary)
     : null;
@@ -105,9 +96,6 @@
       )
     : null;
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
-  $: receivedXnetAirdrop = currentData
-    ? currentData.xnet_has_received_airdrop
-    : null;
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
   onMount(async () => {
@@ -263,18 +251,6 @@
         </div>
       {/if}
     {/if}
-    {#if brokeXnetCorollaryTimestampFormatted && hours_since_violation_xnet_corollary < 168}
-      {#if hours_since_violation_xnet_corollary > 4}
-        <div>
-          No claim allowed. The $XNET Airdrop Corollary was last violated on {brokeXnetCorollaryTimestampFormatted}.
-        </div>
-      {:else}
-        <div>
-          You are currently in violation of The $XNET Airdrop Corollary. When
-          you come into compliance, please wait 6 hours before checking.
-        </div>
-      {/if}
-    {/if}
     {#if brokeTokeCorollaryTimestampFormatted && hours_since_violation_toke_corollary < 168}
       {#if hours_since_violation_toke_corollary > 4}
         <div>
@@ -289,10 +265,6 @@
     {/if}
   {:else}
     <div>Miner has reported but has not yet been ranked.</div>
-  {/if}
-
-  {#if receivedXnetAirdrop !== null && receivedXnetAirdrop === 0}
-    <LabelPair label="$XNET airdrop:" desc="You are eligible!" />
   {/if}
 </div>
 <div id="bottom" class="flex-grow"></div>
