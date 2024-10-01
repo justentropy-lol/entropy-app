@@ -15,15 +15,17 @@
   const maxZoom = 6;
 
   $: burned = 0;
+  $: claimed = 0;
   $: minted = 0;
   $: price = 0;
-  $: estMaxSupply = (1 - burned / minted) * 55500;
+  $: estMaxSupply = 0.5 * (1 + (claimed - burned) / minted) * 55500;
   $: medMined = 0;
   $: burnedFormatted = formatNumber(burned);
+  $: claimedFormatted = formatNumber(claimed);
   $: mintedFormatted = formatNumber(minted);
   $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
-  $: mktCap = (price * (minted - burned)).toFixed(2);
-  //$: estFDV = formatNumber(price * estMaxSupply);
+  $: mktCap = (price * claimed).toFixed(2);
+  $: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
   let minerLocations = [];
   let minerInput = "";
@@ -48,6 +50,7 @@
     const data = await fetchData();
     burned = data.burned.toFixed(0);
     minted = data.minted;
+    claimed = data.claimed;
     medMined = parseFloat(data.median);
     price = parseFloat(data.price);
 
@@ -207,6 +210,13 @@
           <InfoPair label="MKT CAP" desc="${mktCap} million" />
         {/if}
         <InfoPair label="MINED" desc="{mintedFormatted} million" />
+      </div>
+      <div class="flex flex-row">
+        {#if price > 0}
+          <InfoPair label="FDV (est)" desc="${estFDV} million" />
+        {/if}
+        <InfoPair label="NTWK REVENUE" desc="$0" />
+        <InfoPair label="CLAIMED" desc="{claimedFormatted} million" />
       </div>
       <div class="flex flex-row">
         <InfoPair label="DAILY MINT" desc="76 million" />
