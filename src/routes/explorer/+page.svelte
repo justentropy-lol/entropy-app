@@ -22,7 +22,8 @@
   $: burnedFormatted = formatNumber(burned);
   $: mintedFormatted = formatNumber(minted);
   $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
-  $: estFDV = formatNumber(price * estMaxSupply);
+  $: mktCap = (price * (minted - burned)).toFixed(2);
+  //$: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
   let minerLocations = [];
   let minerInput = "";
@@ -195,7 +196,7 @@
 <div class="flex justify-around w-full">
   <div class="w-[calc(100%-100px)] max-w-[833px]">
     <div
-      class="grid grid-col-1 place-items-center text-white text-xs tracking-wider font-sans"
+      class="grid grid-col-1 place-items-center text-white text-xs sm:text-sm tracking-wider font-sans"
     >
       <div class="flex flex-row">
         <InfoPair
@@ -203,7 +204,7 @@
           desc="{estMaxSupplyFormatted} million"
         />
         {#if price > 0}
-          <InfoPair label="FDV" desc="${estFDV} million" />
+          <InfoPair label="MKT CAP" desc="${mktCap} million" />
         {/if}
         <InfoPair label="MINED" desc="{mintedFormatted} million" />
       </div>
@@ -229,7 +230,7 @@
           bind:value={minerInput}
           type="text"
           placeholder=""
-          class="bg-transparent border-b-2 border-white outline-none text-xs text-white tracking-wider placeholder-white transition duration-300 w-full max-w-xs"
+          class="bg-transparent border-b-2 border-white outline-none text-xs sm:text-sm text-white tracking-wider placeholder-white transition duration-300 w-[calc(100%-100px)] max-w-xs"
         />
       </form>
     </div>

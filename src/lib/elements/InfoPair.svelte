@@ -3,7 +3,7 @@
   export let desc;
 </script>
 
-<div class="text-center w-28">
+<div class="text-center w-24 sm:w-28">
   <hr class="border-t border-white w-full my-2" />
   <div>{label}</div>
   <div>{desc}</div>

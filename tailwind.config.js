@@ -11,11 +11,15 @@ export default {
         display: ['"Bobby Jones Soft"', "Arial", "sans-serif"], // Set Bobby Jones as the default sans font
       },
       screens: {
-        sm: "640px", // Default small
-        md: "768px", // Default medium
-        lg: "1024px", // Default large
-        xl: "1280px", // Default extra-large
-        "2xl": "1536px", // Default double extra-large
+        sm: "500px",
+        md: "640px",
+        lg: "768px",
+        xl: "1024px",
+        "2xl": "1280px",
+      },
+      fontSize: {
+        xs: "0.625rem",
+        sm: "0.75rem",
       },
     },
   },
