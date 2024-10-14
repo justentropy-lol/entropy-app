@@ -9,6 +9,10 @@
     blobUrl + "/assets/button_mine-WeIhEkBTM1t32j7KNQk7qdFueMkXhZ.png";
   const claim =
     blobUrl + "/assets/button_claim-UEXufrlMCoopPp6KJowfwSI7GSaIBB.png";
+  const collect =
+    blobUrl + "/assets/button_collect-4kxEodKl5a10aTGAQO2oP0hUBUUGd2.png";
+  const swap =
+    blobUrl + "/assets/button_swap-MZdxeszE929PKWrPttTmZHKFSnswhj.png";
   const perfect =
     blobUrl + "/assets/list_perfect-6GzGJgYZHv4IPtT2e2il9IMUVqyQ8O.png";
   const proud =
@@ -17,6 +21,8 @@
     blobUrl + "/assets/list_tokenomics-piNIt02iNaz9qY9IIbrJnoQyFpTVEa.png";
 
   const discordLink = "https://discord.gg/puredepin";
+  const dripLink = "https://drip.haus/entropy";
+  const jupiterLink = "https://jup.ag/swap/SOL-ENT";
 
   const handleClaim = async () => {
     if ($isWalletConnected) {
@@ -42,12 +48,29 @@
   >
     <img alt="mine button" src={mine} />
   </a>
+  <a
+    href={dripLink}
+    target="_blank"
+    class="w-2/6 hover:opacity-75 active:opacity-50"
+  >
+    <img alt="NFT collection button" src={collect} />
+  </a>
+</div>
+
+<div class="flex justify-around mt-4 w-3/5 min-w-60 max-w-lg">
   <button
     on:click={handleClaim}
     class="w-2/6 hover:opacity-75 active:opacity-50"
   >
     <img alt="claim button" src={claim} />
   </button>
+  <a
+    href={jupiterLink}
+    target="_blank"
+    class="w-2/6 hover:opacity-75 active:opacity-50"
+  >
+    <img alt="DEX button" src={swap} />
+  </a>
 </div>
 
 <div

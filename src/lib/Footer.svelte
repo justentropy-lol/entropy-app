@@ -1,5 +1,7 @@
 <script>
   export let discordLink = "https://discord.gg/puredepin";
+  export let jupiterLink = "https://jup.ag/swap/SOL-ENT";
+  export let dripLink = "https://drip.haus/entropy";
   export let twitterLink = "https://twitter.com/justentropylol";
   export let tiktokLink = "https://www.tiktok.com/@justentropylol";
   export let githubLink = "https://github.com/justentropy-lol";
@@ -22,6 +24,12 @@
 >
 <a href={tiktokLink} target="_blank" class="hover:opacity-75 active:opacity-50"
   ><i class="fa-brands fa-tiktok"></i></a
+>
+<a href={dripLink} target="_blank" class="hover:opacity-75 active:opacity-50"
+  ><i class="fa-solid fa-droplet"></i></a
+>
+<a href={jupiterLink} target="_blank" class="hover:opacity-75 active:opacity-50"
+  ><i class="fa-solid fa-arrow-trend-up"></i></a
 >
 <a href={githubLink} target="_blank" class="hover:opacity-75 active:opacity-50"
   ><i class="fa-brands fa-github"></i></a
