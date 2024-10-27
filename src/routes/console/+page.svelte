@@ -86,15 +86,6 @@
           (1000 * 60 * 60)
       )
     : null;
-  $: brokeTokeCorollaryTimestampFormatted = currentData
-    ? getDate(currentData.toke_timestamp_broke_corollary)
-    : null;
-  $: hours_since_violation_toke_corollary = brokeTokeCorollaryTimestampFormatted
-    ? Math.floor(
-        (new Date() - new Date(currentData.toke_timestamp_broke_corollary)) /
-          (1000 * 60 * 60)
-      )
-    : null;
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
@@ -239,7 +230,7 @@
       </div>
     {/if}
 
-    {#if brokeEntropyTimestampFormatted && hours_since_violation < 168}
+    {#if brokeEntropyTimestampFormatted && hours_since_violation < 168 * totalPages}
       {#if hours_since_violation > 4}
         <div>
           No claim allowed. The Second Law was last violated on {brokeEntropyTimestampFormatted}.
@@ -248,18 +239,6 @@
         <div>
           You are or have recently been in violation of The Second Law. When you
           come into compliance, please wait 6 hours before checking.
-        </div>
-      {/if}
-    {/if}
-    {#if brokeTokeCorollaryTimestampFormatted && hours_since_violation_toke_corollary < 168}
-      {#if hours_since_violation_toke_corollary > 4}
-        <div>
-          No claim allowed. The $TOKE Airdrop Corollary wa last violated on {brokeTokeCorollaryTimestampFormatted}.
-        </div>
-      {:else}
-        <div>
-          You are currently in violation of The $TOKE Airdrop Corollary. When
-          you come into compliance, please wait 6 hours before checking.
         </div>
       {/if}
     {/if}
