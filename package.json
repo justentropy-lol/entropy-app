@@ -28,6 +28,7 @@
     "@vercel/blob": "^0.23.3",
     "buffer": "^6.0.3",
     "deck.gl": "^9.0.29",
-    "mapbox-gl": "^3.5.2"
+    "mapbox-gl": "^3.5.2",
+    "vite-plugin-node-polyfills": "^0.23.0"
   }
 }
