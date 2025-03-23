@@ -13,6 +13,7 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "svelte": "^4.2.7",
     "tailwindcss": "^3.4.3",
     "vite": "^5.0.3"
@@ -23,6 +24,7 @@
     "@deck.gl/core": "^9.0.27",
     "@deck.gl/layers": "^9.0.29",
     "@deck.gl/mapbox": "^9.0.27",
+    "@solana/spl-token": "^0.4.12",
     "@solana/web3.js": "^1.95.1",
     "@turf/turf": "^7.1.0",
     "@vercel/blob": "^0.23.3",
