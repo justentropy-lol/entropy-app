@@ -17,7 +17,7 @@ import {
 import { hashLeaves, generateInclusionProof } from "./merkleTree.js";
 import allocations from "./allocations.js";
 
-import { signTx, signAndSubmitTx } from "$lib/wallet/connect.js";
+import { signAndSubmitTx } from "$lib/wallet/connect.js";
 
 const rpcHost = import.meta.env.VITE_PREMINT_RPC_URL;
 const CONNECTION = new web3.Connection(rpcHost);

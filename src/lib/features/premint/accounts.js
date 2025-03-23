@@ -8,7 +8,7 @@ const ENT_TOKEN_MINT = new web3.PublicKey(
   "ENTxR2RP8NtvhXzMNFCxE1HazzdV9x7SuZqGyAb4jdED"
 );
 const ENTALOL_TOKEN_MINT = new web3.PublicKey(
-  "ENTAoLSUWcnjPe6BNKY5zsw4NQyRNc45ApHH4cgU9Ldy"
+  "3ncoTcDEnLgrX2Li1iSQGt4HMzqigBetxZL4DghMpzcU"
 );
 
 // PreLaunch program and its main PDAs + main PDA ENT ATAs

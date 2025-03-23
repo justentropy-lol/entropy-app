@@ -2,18 +2,24 @@ import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export default defineConfig({
   plugins: [
     sveltekit(),
     nodePolyfills({
-      // Enable polyfills for globals like Buffer and process
       protocolImports: true,
     }),
   ],
   resolve: {
-    alias: {
-      // Alias the missing module to the 'buffer' package.
-      "vite-plugin-node-polyfills/shims/buffer": "buffer",
-    },
+    alias: isProd
+      ? {
+          // Only apply this alias in production.
+          "vite-plugin-node-polyfills/shims/buffer": "buffer",
+        }
+      : {},
+  },
+  define: {
+    global: "globalThis",
   },
 });
