@@ -10,21 +10,28 @@
   const station_data_url = import.meta.env.VITE_STATION_DATA_URL;
   const mars_url = import.meta.env.VITE_MARS_URL;
 
+  const total_api_endpoint = import.meta.env.VITE_ORACLE_HOST + "/total";
+  const circulating_api_endpoint =
+    import.meta.env.VITE_ORACLE_HOST + "/circulating";
+
   let map;
   const startZoom = 1;
   const maxZoom = 6;
 
+  let total = 0;
+  let circulating = 0;
   $: burned = 0;
   $: claimed = 0;
-  $: minted = 0;
+  let minted = 0;
+  let minted_week_ago = 0;
   $: price = 0;
-  $: estMaxSupply = 0.5 * (1 + (claimed - burned) / minted) * 55500;
+  $: estMaxSupply = (1 - burned / minted_week_ago) * 55480;
   $: medMined = 0;
-  $: burnedFormatted = formatNumber(burned);
-  $: claimedFormatted = formatNumber(claimed);
+  $: burnedFormatted = formatNumber(55480 - total);
+  $: circulatingFormatted = formatNumber(circulating);
   $: mintedFormatted = formatNumber(minted);
   $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
-  $: mktCap = (price * claimed).toFixed(2);
+  $: mktCap = (price * circulating).toFixed(2);
   $: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
   let minerLocations = [];
@@ -46,11 +53,26 @@
     return data;
   }
 
+  async function fetchTotal() {
+    const response = await fetch(total_api_endpoint);
+    const total = await response.json();
+    return total;
+  }
+
+  async function fetchCirculating() {
+    const response = await fetch(circulating_api_endpoint);
+    const circulating = await response.json();
+    return circulating;
+  }
+
   async function extractData() {
     const data = await fetchData();
+    total = (await fetchTotal()) / 1_000_000;
+    circulating = (await fetchCirculating()) / 1_000_000;
     burned = data.burned.toFixed(0);
     minted = data.minted;
     claimed = data.claimed;
+    minted_week_ago = data.minted_week_ago;
     medMined = parseFloat(data.median);
     price = parseFloat(data.price);
 
@@ -216,7 +238,7 @@
           <InfoPair label="FDV (est)" desc="${estFDV} million" />
         {/if}
         <InfoPair label="NTWK REVENUE" desc="$0" />
-        <InfoPair label="CLAIMED" desc="{claimedFormatted} million" />
+        <InfoPair label="CIRCULATING" desc="{circulatingFormatted} million" />
       </div>
       <div class="flex flex-row">
         <InfoPair label="DAILY MINT" desc="76 million" />
