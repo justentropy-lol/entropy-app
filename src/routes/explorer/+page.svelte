@@ -18,7 +18,7 @@
   const startZoom = 1;
   const maxZoom = 6;
 
-  let total = 0;
+  let total = 55480;
   let circulating = 0;
   $: burned = 0;
   $: claimed = 0;
