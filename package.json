@@ -25,7 +25,7 @@
     "@deck.gl/layers": "^9.0.29",
     "@deck.gl/mapbox": "^9.0.27",
     "@solana/spl-token": "^0.4.12",
-    "@solana/web3.js": "^1.95.1",
+    "@solana/web3.js": "^1.98.0",
     "@turf/turf": "^7.1.0",
     "@vercel/blob": "^0.23.3",
     "buffer": "^6.0.3",

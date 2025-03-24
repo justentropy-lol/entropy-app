@@ -1,5 +1,5 @@
 // node.js polyfill from https://github.com/feross/buffer
-import * as buffer from "buffer/";
+import * as buffer from "buffer";
 const { Buffer } = buffer;
 
 import * as web3 from "@solana/web3.js";
