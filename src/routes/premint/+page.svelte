@@ -92,12 +92,16 @@
         />
       {/if}
 
-      <div>
-        I wish to pre-mint {sliderValue} ENTROPY NFT{#if sliderValue > 1}s{/if}
-        to my whitelisted wallet address. I understand that the collectible{#if sliderValue > 1}s{/if}
-        will be airdropped upon the launch of ENTROPY: The Awakening. The tokens
-        I am offering in exchange were rightfully earned by me for the entropy I
-        generated. I confirm that I am not a snake&mdash;I am an ENTROPY whale.
+      <div class="text-2xl">
+        {sliderValue} ENTROPY NFT{#if sliderValue > 1}s{/if}
+      </div>
+
+      <div class="text-sm text-justify leading-tight max-w-sm">
+        I wish to pre-mint the above amount to my whitelisted wallet address. I
+        understand that all collectibles will be airdropped upon the launch of
+        ENTROPY: The Awakening. The tokens I am offering in exchange were
+        rightfully earned by me for the entropy I generated. I confirm that I am
+        not a snake&mdash;I am an ENTROPY whale.
       </div>
 
       <button
