@@ -23,6 +23,27 @@ const rpcHost = import.meta.env.VITE_PREMINT_RPC_URL;
 const CONNECTION = new web3.Connection(rpcHost);
 
 const getAllocations = async (pubKey) => {
+  // get ENT on wallet
+  const minerEntAta = token.getAssociatedTokenAddressSync(
+    ENT_TOKEN_MINT,
+    pubKey,
+    true,
+    token.TOKEN_2022_PROGRAM_ID
+  );
+
+  const accountInfoEnt = await CONNECTION.getAccountInfo(minerEntAta);
+
+  let balanceEnt = 0;
+  if (accountInfoEnt) {
+    const balanceEntResponse = await CONNECTION.getTokenAccountBalance(
+      minerEntAta
+    );
+    balanceEnt = balanceEntResponse.value.uiAmount;
+  }
+
+  const fundsBasedMintLimit = Math.floor(balanceEnt / 2_020_202);
+
+  // get ENTALOL on wallet
   const minerEntalolAta = token.getAssociatedTokenAddressSync(
     ENTALOL_TOKEN_MINT,
     pubKey,
@@ -30,27 +51,27 @@ const getAllocations = async (pubKey) => {
     token.TOKEN_2022_PROGRAM_ID
   );
 
-  const accountInfo = await CONNECTION.getAccountInfo(minerEntalolAta);
+  const accountInfoEntalol = await CONNECTION.getAccountInfo(minerEntalolAta);
 
-  let balance = 0;
-  if (accountInfo) {
-    const balanceResponse = await CONNECTION.getTokenAccountBalance(
+  let balanceEntalol = 0;
+  if (accountInfoEntalol) {
+    const balanceEntalolResponse = await CONNECTION.getTokenAccountBalance(
       minerEntalolAta
     );
-    balance = balanceResponse.value.uiAmount;
-    console.log("Token balance:", balanceResponse.value.uiAmount);
+    balanceEntalol = balanceEntalolResponse.value.uiAmount;
   }
 
+  // find remaining ENTALOL allocation
   const leafIdx = allocations.findIndex(
     (alloc) => alloc[0] === pubKey.toBase58()
   );
 
   let allocation = 0;
   if (leafIdx > -1) {
-    allocation = allocations[leafIdx][1] - balance;
+    allocation = allocations[leafIdx][1] - balanceEntalol;
   }
 
-  return allocation;
+  return { allocation, fundsBasedMintLimit };
 };
 
 const _getBuyNftsIx = (miner, nftsNb, minerAllocations, proof) => {
@@ -161,8 +182,13 @@ const getBuyNftsTx = async (miner, nftsNb) => {
   transaction.add(ix);
 
   const txid = await signAndSubmitTx(transaction);
+  // try {
 
-  console.log(txid);
+  // } catch (err) {
+  //   console.error("Error during signAndSubmitTx:", err);
+  //   throw err;
+  // }
+
   return txid;
 };
 

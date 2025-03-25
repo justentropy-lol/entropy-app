@@ -155,7 +155,8 @@ const signAndSubmitTx = async (transaction) => {
       const { signature } = await _provider.signAndSendTransaction(transaction);
       console.log(signature);
     } catch (err) {
-      console.error(err);
+      //console.error(err);
+      throw err;
     }
   }
 };

@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
   import { activeModal } from "$lib/modals/modalControl.js";
   import { isWalletConnected } from "$lib/wallet/connect.js";
   import { getPublicKey } from "$lib/wallet/connect.js";
@@ -15,15 +15,23 @@
   const confirm =
     blobUrl + "/assets/confirm-wz8Cofeh3CXy3eH3W6r5AW9IDo4qFA.png";
 
-  let premintAllocation = null;
-  let pubKey = null;
+  let premintAllocation = null,
+    premintBasedMintLimit = null,
+    pubKey = null;
+  let mintLimit, sliderValue;
+  $: mintLimit = Math.min(premintAllocation, premintBasedMintLimit);
   $: sliderValue = Math.floor((premintAllocation + 1) / 2);
+
+  let claimingInProcess = false;
 
   const handleAllocation = async () => {
     if ($isWalletConnected) {
       pubKey = await getPublicKey();
       console.log(pubKey);
-      premintAllocation = await getAllocations(pubKey);
+      ({
+        allocation: premintAllocation,
+        fundsBasedMintLimit: premintBasedMintLimit,
+      } = await getAllocations(pubKey));
     } else {
       pubKey = null;
       premintAllocation = null;
@@ -33,8 +41,15 @@
 
   const handleSubmit = async (nftsNb) => {
     if ($isWalletConnected) {
-      pubKey = await getPublicKey();
-      await getBuyNftsTx(pubKey.toBase58(), nftsNb);
+      claimingInProcess = true;
+      try {
+        pubKey = await getPublicKey();
+        await getBuyNftsTx(pubKey.toBase58(), nftsNb);
+        claimingInProcess = false;
+        goto("/premint/claimed");
+      } catch (err) {
+        claimingInProcess = false;
+      }
     } else {
       activeModal.set("wallet");
     }
@@ -53,24 +68,24 @@
   </button>
 
   {#if $isWalletConnected && pubKey && typeof premintAllocation === "number"}
-    {#if premintAllocation > 0}
-      <div>
-        Wallet {pubKey.toBase58().slice(0, 4)}...{pubKey.toBase58().slice(-4)} may
-        pre-mint up to {premintAllocation}
-        NFTs.
-      </div>
+    <div>
+      Wallet {pubKey.toBase58().slice(0, 4)}...{pubKey.toBase58().slice(-4)} has
+      a current allocation of {premintAllocation} for pre-mint. There is sufficient
+      balance to mint up to {mintLimit} NFT{#if mintLimit != 1}s{/if}.
+    </div>
+    {#if mintLimit > 0}
       <div class="text-2xl">
-        {#if premintAllocation > 1}
+        {#if mintLimit > 1}
           Slide and
         {/if}
         Confirm below:
       </div>
 
-      {#if premintAllocation > 1}
+      {#if mintLimit > 1}
         <input
           type="range"
           min="1"
-          max={premintAllocation}
+          max={mintLimit}
           step="1"
           bind:value={sliderValue}
           class="w-full custom-slider"
@@ -92,16 +107,23 @@
       >
         <img src={confirm} />
       </button>
-    {:else}
-      <div>
-        Wallet {pubKey.toBase58().slice(0, 4)}...{pubKey.toBase58().slice(-4)} has
-        no allocation for pre-mint.
-      </div>
     {/if}
   {:else}
     <div>Check wallet allocation above.</div>
   {/if}
 </div>
+
+{#if claimingInProcess}
+  <div class="relative">
+    <div
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-transparent border-t-white"
+      ></div>
+    </div>
+  </div>
+{/if}
 
 <style>
   input[type="range"].custom-slider {
