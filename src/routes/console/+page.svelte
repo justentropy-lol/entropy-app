@@ -46,7 +46,7 @@
   $: totalPages = data.length;
   $: currentData = totalPages ? data[currentPage] : null;
   $: latestValueHex = currentData
-    ? `0x${BigInt(currentData.value_latest_str).toString(16)}`
+    ? `0x${BigInt(currentData.value_latest).toString(16)}`
     : null;
   $: latestTimestampFormatted = currentData
     ? getDate(currentData.timestamp_latest)
