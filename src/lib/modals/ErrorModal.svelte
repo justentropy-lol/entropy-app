@@ -28,6 +28,10 @@
       There is nothing to claim right now
     {:else if code === "BANNED_MINER"}
       Your credentials have been deactivated
+    {:else if code === "SRCFUL_CONDITIONS_NOT_MET"}
+      <p>You are not meeting the conditions to claim:</p>
+      <p>1. Own an Elemental NFT</p>
+      <p>2. Participate as a miner in Sourceful</p>
     {:else if code === "TRY_AGAIN_LATER"}
       <p>System under maintenance.</p>
       <p>Try again later.</p>
