@@ -81,7 +81,8 @@
 
     <div in:fade={{ duration: 800, delay: 600 }} class="mt-10">
       <a
-        href="#gallery"
+        href="https://heliumdeploy.com/products/ashlar"
+        target="_blank"
         class="px-8 py-3 bg-brand text-white font-sans text-sm hover:bg-brand/90 transform hover:translate-x-2 hover:-translate-y-2 hover:shadow-[4px_4px_0px_0px_rgba(128,128,128,0.4)] transition-all"
       >
         OWN EXTRAORDINARY
