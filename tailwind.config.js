@@ -5,10 +5,12 @@ export default {
     extend: {
       colors: {
         flamingo: "#fc8eac",
+        bground: "#e596ac",
+        brand: "#f391ac",
       },
       fontFamily: {
-        sans: ['"Roboto"', "sans-serif"], // Set Roboto as the default sans font
-        display: ['"Bobby Jones Soft"', "Arial", "sans-serif"], // Set Bobby Jones as the default sans font
+        sans: ['"Sand"', "sans-serif"], // Set Roboto as the default sans font
+        display: ['"Circe"', "sans-serif"], // Set Bobby Jones as the default sans font
       },
       screens: {
         sm: "500px",

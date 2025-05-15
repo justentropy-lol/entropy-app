@@ -19,7 +19,7 @@
 </script>
 
 <div
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   on:click={() => dispatch("close")}
 >
   <div

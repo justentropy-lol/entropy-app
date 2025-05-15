@@ -31,6 +31,7 @@
   $: circulatingFormatted = formatNumber(circulating);
   $: mintedFormatted = formatNumber(minted);
   $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
+  $: remainingFormatted = formatNumber(55480 - minted);
   $: mktCap = (price * circulating).toFixed(2);
   $: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
@@ -217,20 +218,18 @@
   };
 </script>
 
+<div class="absolute inset-0 z-0 bg-bground w-full h-full min-h-[1000px]"></div>
 <div class="h-8"></div>
-<div class="flex justify-around w-full">
+<div class="flex justify-around w-full z-30 mt-16 mb-6">
   <div class="w-[calc(100%-100px)] max-w-[833px]">
     <div
       class="grid grid-col-1 place-items-center text-white text-xs sm:text-sm tracking-wider font-sans"
     >
       <div class="flex flex-row">
-        <InfoPair
-          label="MAX SUPPLY (est)"
-          desc="{estMaxSupplyFormatted} million"
-        />
         {#if price > 0}
           <InfoPair label="MKT CAP" desc="${mktCap} million" />
         {/if}
+        <InfoPair label="CIRCULATING" desc="{circulatingFormatted} million" />
         <InfoPair label="MINED" desc="{mintedFormatted} million" />
       </div>
       <div class="flex flex-row">
@@ -238,18 +237,21 @@
           <InfoPair label="FDV (est)" desc="${estFDV} million" />
         {/if}
         <InfoPair label="NTWK REVENUE" desc="$0" />
-        <InfoPair label="CIRCULATING" desc="{circulatingFormatted} million" />
+        <InfoPair label="BURNED" desc="{burnedFormatted} million" />
       </div>
       <div class="flex flex-row">
         <InfoPair label="DAILY MINT" desc="76 million" />
         {#if price > 0}
           <InfoPair label="MEDIAN EARN" desc="${estEarn} per day" />
         {/if}
-        <InfoPair label="BURNED" desc="{burnedFormatted} million" />
+        <InfoPair label="REMAINING" desc="{remainingFormatted} million" />
       </div>
     </div>
     <div class="h-4"></div>
-    <div id="mapContainer" class="w-full h-[469px] relative">
+    <div
+      id="mapContainer"
+      class="w-full h-[469px] relative border border-white shadow-md"
+    >
       <div id="map" class="w-full h-[469px]"></div>
       <div id="hexHoverInfo"></div>
     </div>

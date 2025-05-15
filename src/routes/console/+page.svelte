@@ -41,6 +41,9 @@
   let dataReceived = false;
   let message = null;
 
+  let resultDiv;
+  let bottomDiv;
+
   let data = [];
   let currentPage = 0;
   $: totalPages = data.length;
@@ -89,20 +92,14 @@
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
-  onMount(async () => {
-    const response = await fetch(generate_message_endpoint, {
-      method: "POST",
-    });
-    message = await response.json();
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("click", handleTouch);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("click", handleTouch);
-    };
-  });
+  const handleClaim = async () => {
+    errorMsg = "";
+    if ($isWalletConnected) {
+      activeModal.set("claim");
+    } else {
+      activeModal.set("wallet");
+    }
+  };
 
   const handleConnect = async () => {
     if (!submitDisabled) {
@@ -159,8 +156,7 @@
   }
 
   function handleTouch(event) {
-    const resultDiv = document.getElementById("result");
-    const bottomDiv = document.getElementById("bottom");
+    // if (!resultDiv || !bottomDiv) return; // guard
     const touchY = event.touches ? event.touches[0].clientY : event.clientY;
 
     const bbResult = resultDiv.getBoundingClientRect();
@@ -176,77 +172,120 @@
       changePage(1);
     }
   }
+
+  onMount(async () => {
+    const response = await fetch(generate_message_endpoint, {
+      method: "POST",
+    });
+    message = await response.json();
+
+    // window.addEventListener("keydown", handleKeyDown);
+    // window.addEventListener("click", handleTouch);
+
+    // return () => {
+    //   window.removeEventListener("keydown", handleKeyDown);
+    //   window.removeEventListener("click", handleTouch);
+    // };
+  });
 </script>
 
-<button
-  type="submit"
-  class="flex justify-around mt-4 px-4 py-2 transition duration-300"
->
-  <img
-    alt="submit button"
-    src={submit}
-    on:click={handleConnect}
-    class="w-3/12 transition duration-300 active:opacity-50"
-    style="opacity: {submitDisabled ? 0.5 : 1}; pointer-events: {submitDisabled
-      ? 'none'
-      : 'auto'};"
-  />
-</button>
-{#if errorMsg}
-  <div class="font-display text-2xl text-center">
-    {errorMsg}
+<svelte:window
+  on:keydown={(e) => {
+    if (e.key === "ArrowUp") changePage(-1);
+    else if (e.key === "ArrowDown") changePage(1);
+  }}
+  on:click={handleTouch}
+/>
+
+<div class="absolute inset-0 z-0 bg-bground w-full h-full min-h-[1400px]"></div>
+
+<div class="z-10 mt-16 w-9/12">
+  <div class="flex">
+    <button
+      type="submit"
+      class="flex justify-around m-4 px-4 py-2 w-full max-w-xs mx-auto transition duration-300"
+      on:click={handleClaim}
+    >
+      <span
+        class="px-4 py-2 bg-brand border-2 border-b-white text-white font-sans text-xl hover:bg-brand/80 transition-colors hover:shadow-[2px_2px_0px_0px_rgba(128,128,128,0.4)] duration-200"
+      >
+        CLAIM
+      </span>
+    </button>
+    <button
+      type="submit"
+      class="flex justify-around m-4 px-4 py-2 w-full max-w-xs mx-auto transition duration-300"
+      on:click={handleConnect}
+      style="opacity: {submitDisabled
+        ? 0.5
+        : 1}; pointer-events: {submitDisabled ? 'none' : 'auto'};"
+    >
+      <span
+        class="px-4 py-2 bg-brand border-2 border-b-white text-white font-sans text-xl hover:bg-brand/80 transition-colors hover:shadow-[2px_2px_0px_0px_rgba(128,128,128,0.4)] duration-200"
+      >
+        STATUS
+      </span>
+    </button>
   </div>
-{/if}
-<div
-  id="result"
-  class="flex-none space-y-1 p-4 text-white sm:text-lg md:text-xl tracking-wider font-sans w-9/12 max-w-lg mx-auto transition-opacity duration-500"
-  style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay
-    ? 'auto'
-    : 'none'};"
->
-  <LabelPair label="Miner{displayPage}:" desc={minerName} />
-  <LabelPair label="Address:" desc={solAddy} />
-  <LabelPair label="Latest value:" desc={latestValueHex} />
-  <LabelPair label="Latest receipt:" desc={latestTimestampFormatted} />
-  <LabelPair label="Mean entropy:" desc={entropyMean} />
-  <LabelPair label="Mean interval:" desc="{intervalMean} h" />
-  <LabelPair label="Consecutive reports:" desc={consecutiveReports} />
-  {#if rank > 0}
-    <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
-    <LabelPair label="Score:" desc={score} />
+
+  {#if errorMsg}
+    <div class="font-sans text-md text-center">
+      {errorMsg}
+    </div>
   {/if}
-
-  {#if to_claim}
-    <LabelPair
-      label="Amount accumulated:"
-      desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
-    />
-    <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
-    <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
-
-    {#if rank === 0}
-      <div>
-        Miner was unresponsive during the most recent epoch and was not ranked.
-      </div>
+  <div
+    bind:this={resultDiv}
+    id="result"
+    class="flex-none space-y-1 p-4 text-white sm:text-lg md:text-xl tracking-wider font-sans w-full max-w-xl mx-auto transition-opacity duration-500"
+    style="opacity: {dataBoxDisplay ? 1 : 0}; pointer-events: {dataBoxDisplay
+      ? 'auto'
+      : 'none'};"
+  >
+    <LabelPair label="Miner{displayPage}:" desc={minerName} />
+    <LabelPair label="Address:" desc={solAddy} />
+    <LabelPair label="Latest value:" desc={latestValueHex} />
+    <LabelPair label="Latest receipt:" desc={latestTimestampFormatted} />
+    <LabelPair label="Mean entropy:" desc={entropyMean} />
+    <LabelPair label="Mean interval:" desc="{intervalMean} h" />
+    <LabelPair label="Consecutive reports:" desc={consecutiveReports} />
+    {#if rank > 0}
+      <LabelPair label="Rank:" desc="{rank} of {totalRanked}" />
+      <LabelPair label="Score:" desc={score} />
     {/if}
 
-    {#if brokeEntropyTimestampFormatted && hours_since_violation < 168 * totalPages}
-      {#if hours_since_violation > 4}
+    {#if to_claim}
+      <LabelPair
+        label="Amount accumulated:"
+        desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
+      />
+      <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
+      <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+
+      {#if rank === 0}
         <div>
-          No claim allowed. The Second Law was last violated on {brokeEntropyTimestampFormatted}.
-        </div>
-      {:else}
-        <div>
-          You are or have recently been in violation of The Second Law. When you
-          come into compliance, please wait 6 hours before checking.
+          Miner was unresponsive during the most recent epoch and was not
+          ranked.
         </div>
       {/if}
+
+      {#if brokeEntropyTimestampFormatted && hours_since_violation < 168 * totalPages}
+        {#if hours_since_violation > 4}
+          <div>
+            No claim allowed. The Second Law was last violated on {brokeEntropyTimestampFormatted}.
+          </div>
+        {:else}
+          <div>
+            You are or have recently been in violation of The Second Law. When
+            you come into compliance, please wait 6 hours before checking.
+          </div>
+        {/if}
+      {/if}
+    {:else}
+      <div>Miner has reported but has not yet been ranked.</div>
     {/if}
-  {:else}
-    <div>Miner has reported but has not yet been ranked.</div>
-  {/if}
+  </div>
 </div>
-<div id="bottom" class="flex-grow"></div>
+<div bind:this={bottomDiv} id="bottom" class="flex-grow"></div>
 
 <style>
   #result {

@@ -10,3 +10,17 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Circe';
+  src: url('/fonts/Circe-Black.otf') format('otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sand';
+  src: url('/fonts/Sand Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
