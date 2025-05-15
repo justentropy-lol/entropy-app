@@ -52,7 +52,7 @@
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="flex items-center space-x-8">
+    <nav class="hidden md:flex items-center space-x-8">
       <a
         href="https://bodega.justentropy.lol"
         target="_blank"
@@ -83,70 +83,45 @@
       </div>
     </nav>
 
-    <!-- Mobile Menu Button -->
-    <!-- <button
-      class="md:hidden text-2xl"
+    <nav class="flex md:hidden items-center space-x-8">
+      <div
+        class="px-4 py-2 bg-brand text-white font-sans text-sm hover:bg-brand/80 transition-colors hover:shadow-[2px_2px_0px_0px_rgba(128,128,128,0.4)] duration-200"
+      >
+        {#if $isWalletConnected && $page.url.pathname === "/console"}
+          <button on:click={handleDisconnect}>DISCONNECT</button>
+        {:else}
+          <a href="/console" data-sveltekit-reload>CONSOLE</a>
+        {/if}
+      </div>
+    </nav>
+
+    <!-- Mobile Hamburger -->
+    <button
+      class="md:hidden p-2"
+      aria-label="Toggle menu"
       on:click={() => (mobileMenuOpen = !mobileMenuOpen)}
     >
-      <i
-        class="ri-menu-line"
-        class:text-black={scrolled}
-        class:text-white={!scrolled}
-      ></i>
-    </button> -->
+      {#if mobileMenuOpen}
+        ✕
+      {:else}
+        ☰
+      {/if}
+    </button>
   </div>
 
-  <!-- Mobile Navigation Overlay
+  <!-- Mobile Menu -->
   {#if mobileMenuOpen}
-    <div class="fixed inset-0 bg-black z-40" in:fade out:fade>
-      <div class="flex flex-col h-full">
-        <div class="flex justify-between items-center p-4">
-          <a
-            href="/"
-            class="flex items-center space-x-2"
-            on:click={() => (mobileMenuOpen = false)}
+    <nav
+      class="md:hidden absolute right-4 inline-flex flex-col bg-white shadow-lg"
+    >
+      <ul class="flex flex-col divide-y text-black text-sm">
+        <li>
+          <a href="https://bodega.justentropy.lol" class="block px-4 py-3"
+            >SHOP</a
           >
-            <div
-              class="relative w-8 h-8 bg-primary flex items-center justify-center text-white transform -rotate-3"
-            >
-              <div
-                class="absolute w-8 h-8 bg-primary/50 transform rotate-6 -z-10 top-1 left-1"
-              ></div>
-              <span class="font-display text-xl">A</span>
-            </div>
-            <h1 class="font-display text-xl text-white">
-              <span class="text-primary">FLAMINGO</span><span>ART</span>
-            </h1>
-          </a>
-          <button
-            class="text-2xl text-white"
-            on:click={() => (mobileMenuOpen = false)}
-          >
-            <i class="ri-close-line"></i>
-          </button>
-        </div>
-
-        <nav
-          class="flex flex-col items-center justify-center flex-grow space-y-8 p-4"
-        >
-          {#each [["/", "HOME"], ["/collections", "COLLECTIONS"], ["/artists", "ARTISTS"], ["/about", "ABOUT"]] as [href, label]}
-            <a
-              {href}
-              class="font-mono text-xl text-white hover:text-primary transition-colors"
-              on:click={() => (mobileMenuOpen = false)}
-            >
-              {label}
-            </a>
-          {/each}
-          <a
-            href="/contact"
-            class="px-6 py-3 bg-primary text-white font-mono text-sm hover:bg-primary/90 transition-colors"
-            on:click={() => (mobileMenuOpen = false)}
-          >
-            CONTACT
-          </a>
-        </nav>
-      </div>
-    </div>
-  {/if} -->
+        </li>
+        <li><a href="/explorer" class="block px-4 py-3">EXPLORER</a></li>
+      </ul>
+    </nav>
+  {/if}
 </div>

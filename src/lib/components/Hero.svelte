@@ -5,7 +5,8 @@
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
   export let backgroundImageUrl =
-    blobUrl + "/ashlar/center-zNJyfsLs7LqbH3ruGQzgIUkEHV0XSr.png";
+    // blobUrl + "/ashlar/center-zNJyfsLs7LqbH3ruGQzgIUkEHV0XSr.png";
+    blobUrl + "/ashlar/center-pHFnKgE4FsWn16OZP4LxrdDMjmBkmB.png";
 </script>
 
 <div class="relative w-screen h-screen min-h-[600px] overflow-hidden">
