@@ -1,6 +1,9 @@
 <script>
   const currentYear = new Date().getFullYear();
-  export let backgroundImageUrl = "/images/brazil.png";
+  const blobUrl = import.meta.env.VITE_BLOB_URL;
+
+  export let backgroundImageUrl =
+    blobUrl + "/art/brazil-WqMRRZ5dKKkvEz4pcfvBXs63pVnQ9v.png";
 </script>
 
 <div class="bg-black text-white pt-36 pb-4 px-4 relative overflow-hidden">
