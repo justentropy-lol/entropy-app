@@ -254,12 +254,16 @@
     {/if}
 
     {#if to_claim}
-      <LabelPair
-        label="Amount accumulated:"
-        desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
-      />
-      <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
-      <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+      {#if to_claim < 2000}
+        <LabelPair label="Status:" desc="Please make your first claim" />
+      {:else}
+        <LabelPair
+          label="Amount accumulated:"
+          desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
+        />
+        <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
+        <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+      {/if}
 
       {#if rank === 0}
         <div>
