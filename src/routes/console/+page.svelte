@@ -197,7 +197,7 @@
   on:click={handleTouch}
 />
 
-<div class="absolute inset-0 z-0 bg-bground w-full h-full min-h-[1400px]"></div>
+<div class="absolute inset-0 z-0 bg-bground w-full h-full min-h-[1100px]"></div>
 
 <div class="z-10 mt-16 w-9/12">
   <div class="flex">
