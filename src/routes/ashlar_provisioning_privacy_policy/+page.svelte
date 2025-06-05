@@ -35,8 +35,8 @@
 
   <p class="mb-4">
     If you have questions or concerns, please contact us at:
-    <a href="mailto:info@justentropy.lol" class="hover:underline"
-      >info@justentropy.lol</a
+    <a href="mailto:contact@justentropy.lol" class="hover:underline"
+      >contact@justentropy.lol</a
     >
   </p>
 </div>

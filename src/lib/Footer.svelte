@@ -1,11 +1,11 @@
 <script>
-  export let discordLink = "https://discord.gg/puredepin";
+  export let discordLink = "https://discord.gg/minerseatfirst";
   export let jupiterLink = "https://jup.ag/swap/SOL-ENT";
   export let dripLink = "https://drip.haus/entropy";
   export let twitterLink = "https://twitter.com/justentropylol";
   export let tiktokLink = "https://www.tiktok.com/@justentropylol";
   export let githubLink = "https://github.com/justentropy-lol";
-  export let docsLink = "https://docs.puredepin.com/";
+  export let docsLink = "https://docs.justentropy.lol/";
   export let explorerLink = "/explorer";
   export let consoleLink = "/console";
   export let coingeckoLink = "https://www.coingecko.com/en/coins/entropy-2";

@@ -167,6 +167,14 @@
         <ul class="space-y-2 font-mono text-sm">
           <li>
             <a
+              href="/info/support"
+              target="_self"
+              class="text-gray-400 hover:text-primary transition-colors"
+              >support</a
+            >
+          </li>
+          <li>
+            <a
               href="https://github.com/justentropy-lol"
               target="_blank"
               class="text-gray-400 hover:text-primary transition-colors"
@@ -175,7 +183,7 @@
           </li>
           <li>
             <a
-              href="https://docs.puredepin.com"
+              href="https://docs.justentropy.lol"
               target="_blank"
               class="text-gray-400 hover:text-primary transition-colors">Docs</a
             >
