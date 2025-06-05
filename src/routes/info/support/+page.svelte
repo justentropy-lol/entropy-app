@@ -2,6 +2,14 @@
   <h1 class="text-3xl font-bold mb-4">Tech Support</h1>
 
   <p class="mb-4">
+    Documentation for the project is available at <a
+      href="https://docs.justentropy.lol"
+      target="_blank"
+      class="hover:underline">https://docs.justentropy.lol</a
+    >.
+  </p>
+
+  <p class="mb-4">
     For assistance with the Ashlar or either of the supported provisioning apps,
     please choose one of the following contact methods:
   </p>
