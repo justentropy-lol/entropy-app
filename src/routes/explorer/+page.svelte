@@ -32,7 +32,9 @@
   $: mintedFormatted = formatNumber(minted);
   // $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
   // $: remainingFormatted = formatNumber(55480 - minted);
-  $: remainingPercent = ((55480 - minted) / (55480 - burned)).toFixed(0);
+  $: remainingPercent = (((55480 - minted) / (55480 - burned)) * 100).toFixed(
+    0
+  );
   $: mktCap = (price * circulating).toFixed(2);
   $: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
