@@ -73,8 +73,11 @@
   $: ent_burned = currentData
     ? Number(currentData.ent_burned.toFixed(0)).toLocaleString("en-US")
     : null;
-  $: ent_needed = currentData
-    ? Number(currentData.ent_needed.toFixed(0)).toLocaleString("en-US")
+  $: ent_needed_2nd_law = currentData
+    ? Number(currentData.ent_needed_2nd_law.toFixed(0)).toLocaleString("en-US")
+    : null;
+  $: ent_needed_jd = currentData
+    ? Number(currentData.ent_needed_jd.toFixed(0)).toLocaleString("en-US")
     : null;
   $: days_of_rewards = currentData ? currentData.days_of_rewards : null;
   $: to_claim = currentData
@@ -259,7 +262,11 @@
         desc="{to_claim} $ENT over past {days_of_rewards} day(s)"
       />
       <LabelPair label="Lifetime burn:" desc="{ent_burned} $ENT" />
-      <LabelPair label="Second Law requirement:" desc="{ent_needed} $ENT" />
+      <LabelPair
+        label="Second Law requirement:"
+        desc="{ent_needed_2nd_law} $ENT"
+      />
+      <LabelPair label="JD requirement:" desc="{ent_needed_jd} $ENT" />
 
       {#if rank === 0}
         <div>
