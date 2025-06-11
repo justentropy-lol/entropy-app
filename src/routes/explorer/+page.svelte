@@ -30,8 +30,9 @@
   $: burnedFormatted = formatNumber(55480 - total);
   $: circulatingFormatted = formatNumber(circulating);
   $: mintedFormatted = formatNumber(minted);
-  $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
-  $: remainingFormatted = formatNumber(55480 - minted);
+  // $: estMaxSupplyFormatted = formatNumber(estMaxSupply);
+  // $: remainingFormatted = formatNumber(55480 - minted);
+  $: remainingPercent = ((55480 - minted) / (55480 - burned)).toFixed(0);
   $: mktCap = (price * circulating).toFixed(2);
   $: estFDV = formatNumber(price * estMaxSupply);
   $: estEarn = (price * medMined).toFixed(2);
@@ -244,7 +245,7 @@
         {#if price > 0}
           <InfoPair label="MEDIAN EARN" desc="${estEarn} per day" />
         {/if}
-        <InfoPair label="REMAINING" desc="{remainingFormatted} million" />
+        <InfoPair label="REMAINING" desc="{remainingPercent}%" />
       </div>
     </div>
     <div class="h-4"></div>
