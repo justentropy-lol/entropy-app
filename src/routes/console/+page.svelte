@@ -92,6 +92,7 @@
           (1000 * 60 * 60)
       )
     : null;
+  $: jd_strikes = currentData ? currentData.jd_strikes : null;
   $: displayPage = totalPages > 1 ? " #" + (currentPage + 1) : "";
   $: submitDisabled = (isWalletConnected && !message) || dataReceived;
 
@@ -267,6 +268,20 @@
         desc="{ent_needed_2nd_law} $ENT"
       />
       <LabelPair label="JD requirement:" desc="{ent_needed_jd} $ENT" />
+      <div>
+        JD strikes:
+        <div class="ml-4">
+          {#each Array(7) as _, i}
+            <span
+              class="w-5 h-5 inline-flex items-center justify-center rounded-full border-2 text-xs"
+              class:border-gray-700={i < jd_strikes}
+              class:border-white={i >= jd_strikes}
+            >
+              &nbsp;
+            </span>
+          {/each}
+        </div>
+      </div>
 
       {#if rank === 0}
         <div>
