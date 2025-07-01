@@ -41,7 +41,7 @@ const getAllocations = async (pubKey) => {
     balanceEnt = balanceEntResponse.value.uiAmount;
   }
 
-  const fundsBasedMintLimit = Math.floor(balanceEnt / 2_020_202);
+  const fundsBasedMintLimit = Math.floor(balanceEnt / 2_424_242);
 
   // get ENTALOL on wallet
   const minerEntalolAta = token.getAssociatedTokenAddressSync(
