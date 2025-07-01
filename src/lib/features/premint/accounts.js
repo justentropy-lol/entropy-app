@@ -8,12 +8,12 @@ const ENT_TOKEN_MINT = new web3.PublicKey(
   "ENTxR2RP8NtvhXzMNFCxE1HazzdV9x7SuZqGyAb4jdED"
 );
 const ENTALOL_TOKEN_MINT = new web3.PublicKey(
-  "ENTAoLSUWcnjPe6BNKY5zsw4NQyRNc45ApHH4cgU9Ldy"
+  "ENTA22nLx2nv8UdFBWgDaxrsNjnqd7fDY5GmsPnUizSM"
 );
 
 // PreLaunch program and its main PDAs + main PDA ENT ATAs
 const PRE_LAUNCH_PROGRAM = new web3.PublicKey(
-  "DMZk98JYafH9oX4sXbVrvHrG6zwdmYyA3z6YH2ErbjNe"
+  "preGi48RF98zxxJJ8YG4ZBLTVRADL4anb5qhgLehnfn"
 );
 const [globalPda] = web3.PublicKey.findProgramAddressSync(
   [Buffer.from("GLOBAL_PDA")],

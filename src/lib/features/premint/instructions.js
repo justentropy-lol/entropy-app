@@ -137,7 +137,7 @@ const _getBuyNftsIx = (miner, nftsNb, minerAllocations, proof) => {
       { pubkey: saleProceedsPda, isSigner: false, isWritable: false },
       { pubkey: mintFeesPda, isSigner: false, isWritable: false },
       // ENT mint + ENT ATAs
-      { pubkey: ENT_TOKEN_MINT, isSigner: false, isWritable: false },
+      { pubkey: ENT_TOKEN_MINT, isSigner: false, isWritable: true },
       { pubkey: minerEntAta, isSigner: false, isWritable: true },
       { pubkey: saleProceedsPdaEntAta, isSigner: false, isWritable: true },
       { pubkey: mintFeesPdaEntAta, isSigner: false, isWritable: true },
