@@ -41,6 +41,11 @@
     {:else if code === "SECOND_LAW_BROKEN_RECENT"}
       <p>You broke The Second Law.</p>
       <p>Check console for details.</p>
+    {:else if code === "LACK_MINING_NFT_NOW"}
+      NFT requirement not met
+    {:else if code === "LACK_MINING_NFT_RECENT"}
+      <p>NFT requirement cooldown period.</p>
+      <p>Wait {detail} day(s).</p>
     {:else if code === "CLAIM_PROCESSING"}
       A claim is in process
     {/if}
