@@ -243,7 +243,7 @@
         <InfoPair label="BURNED" desc="{burnedFormatted} million" />
       </div>
       <div class="flex flex-row">
-        <InfoPair label="DAILY MINT" desc="76 million" />
+        <InfoPair label="DAILY MINT" desc="38 million" />
         {#if price > 0}
           <InfoPair label="MEDIAN EARN" desc="${estEarn} per day" />
         {/if}
