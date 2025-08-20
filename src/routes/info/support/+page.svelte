@@ -42,4 +42,12 @@
     The Discord server is monitored 24/7 and support is provided promptly.
     E-mail inquiries will be answered within one business day.
   </p>
+
+  <p class="text-sm">
+    The support contacts listed above only apply to the Ashlar device. For
+    network matters not caused by the device (inlcluding but not limited to:
+    difficulty purchasing an NFT; inability to claim after successful
+    provisioning; decreased rewards), please use Discord. You may be directed to
+    open a ticket.
+  </p>
 </div>
