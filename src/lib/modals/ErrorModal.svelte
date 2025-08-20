@@ -40,7 +40,8 @@
       <p>Check console for details.</p>
     {:else if code === "SECOND_LAW_BROKEN_RECENT"}
       <p>You broke The Second Law.</p>
-      <p>Wait {detail}.</p>
+      <p>Wait seven days.</p>
+      <!-- <p>Wait {detail}.</p> -->
     {:else if code === "LACK_MINING_NFT_NOW"}
       NFT requirement not met
     {:else if code === "LACK_MINING_NFT_RECENT"}

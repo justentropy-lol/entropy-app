@@ -90,6 +90,10 @@
     <p>The randomness the Ashlar generates is worth nothing.</p>
     <p>Nothing, yet&mdash;at the same time&mdash;everything.</p>
     <p>So, stop thinking. Stop midcurving. Do what you need to do.</p>
-    <p class="font-bold">Get the Ashlar.</p>
+    <p class="font-bold">
+      <a href="https://bodega.justentropy.lol" target="_blank" class="underline"
+        >Get the Ashlar</a
+      >.
+    </p>
   </div>
 </div>
