@@ -4,7 +4,7 @@
 
 > Entropy is a crypto project where users generate entropy (randomness) using a device called the Ashlar. In return, they earn \$ENT tokens. The project is intentionally whimsical, embracing the idea that the randomness generated is worth nothing. An \$ENT is always worth an \$ENT.
 
-> The site and community lean into the absurdity and fun of web3 culture. A DePIN that literally mines nothiing (entropy). A memecoin that makes you dig holes. The Fight Club of Crypto. An art project centered around a business that does nothing. Just. Pure. DePIN.
+> The site and community lean into the absurdity and fun of web3 culture. A DePIN that literally mines nothing (entropy). A memecoin that makes you dig holes. The Fight Club of Crypto. An art project centered around a business that does nothing. Just. Pure. DePIN.
 
 ## Key Concepts
 
@@ -18,8 +18,8 @@
 
 - [Homepage](https://justentropy.lol/): Introduction to the project, its philosophy, and links to other sections.
 - [Console](https://justentropy.lol/console): The Console page allows users (miners) to view their mining status, claim \$ENT, and see stats such as address, latest value, mean entropy, and reporting streaks.
-- [Explorer](https://justentropy.lol/explorer): The Explorer page displays network-wide statistics, including circulating and mined $ENT, network revenue, burned tokens, daily mint, and remaining supply.
-- [Documentation](https://docs.justentropy.lol/): Explains the philospohpy of the project, the steps to on-board a miner, the tokenomics of $ENT, and other unique aspects of the project.
+- [Explorer](https://justentropy.lol/explorer): The Explorer page displays network-wide statistics, including circulating and mined \$ENT, network revenue, burned tokens, daily mint, and remaining supply.
+- [Documentation](https://docs.justentropy.lol/): Explains the philospohpy of the project, the steps to on-board a miner, the tokenomics of \$ENT, and other unique aspects of the project.
 - [Shop](https://bodega.justentropy.lol/): The store has exclusive Entropy merch drops. Miners eat first and they eat in style.
 
 ## Resources
@@ -48,7 +48,7 @@
   - [Tensor](https://www.tensor.trade/trade/eeee)
   - [Magic Eden](https://magiceden.us/marketplace/ent-misc)
 
-### Web3 / $ENT Token
+### Web3 / \$ENT Token
 
 - [Coingecko](https://www.coingecko.com/en/coins/entropy-2)
 - [DRiP](https://drip.haus/entropy)
