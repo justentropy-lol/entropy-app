@@ -1,0 +1,86 @@
+# justentropy.lol
+
+> Welcome to Entropy: the first DePIN meme coin. Entropy is the original ESP-32 DePIN mining project. Entropy is a playful, web3-native art project centered around the concept of "entropy mining" and the \$ENT token. Miners Eat First.
+
+> Entropy is a crypto project where users generate entropy (randomness) using a device called the Ashlar. In return, they earn \$ENT tokens. The project is intentionally whimsical, embracing the idea that the randomness generated is worth nothing. An \$ENT is always worth an \$ENT.
+
+> The site and community lean into the absurdity and fun of web3 culture. A DePIN that literally mines nothiing (entropy). A memecoin that makes you dig holes. The Fight Club of Crypto. An art project centered around a business that does nothing. Just. Pure. DePIN.
+
+## Key Concepts
+
+- **Philosophy**: The project is intentionally satirical and tongue-in-cheek, poking fun at the seriousness of crypto, Web3, and mining. Its hand-drawn collectible NFT artwork is world-class, slyly references pop-culture, and some even have unexpected utility.
+- **Entropy Mining**: The act of producing entropy (randomness) via an Entropy miner which is rewarded with \$ENT.
+- **Ashlar**: The official miner for generating entropy and mining $ENT. It can be purchased by anyone.
+- **ESP-32**: The original DIY entropy miner. Its blessed firmware is only obtainable by digging a useless hole that is approved by select members of the community. This avenue of obtaining mining/claiming firmware has been paused as of October 2025.
+- **$ENT**: The native token earned by generating entropy. It must be claimed at least every seven days via the console on the website, otherwise unclaimed tokens will be burned.
+
+## Main Pages
+
+- [Homepage](https://justentropy.lol/): Introduction to the project, its philosophy, and links to other sections.
+- [Console](https://justentropy.lol/console): The Console page allows users (miners) to view their mining status, claim \$ENT, and see stats such as address, latest value, mean entropy, and reporting streaks.
+- [Explorer](https://justentropy.lol/explorer): The Explorer page displays network-wide statistics, including circulating and mined $ENT, network revenue, burned tokens, daily mint, and remaining supply.
+- [Documentation](https://docs.justentropy.lol/): Explains the philospohpy of the project, the steps to on-board a miner, the tokenomics of $ENT, and other unique aspects of the project.
+- [Shop](https://bodega.justentropy.lol/): The store has exclusive Entropy merch drops. Miners eat first and they eat in style.
+
+## Resources
+
+### Socials
+
+- [Discord](https://discord.gg/justentropy)
+- [X (Twitter) Main account](https://x.com/justentropylol)
+- [X (Twitter) Miners Dig Holes account](https://x.com/minersdigholes)
+- [TikTok](https://www.tiktok.com/@justentropy)
+- [Reddit](https://www.reddit.com/r/EntropyCrypto)
+
+### NFT Collections
+
+- ENTROPY Acolytes
+
+  - [Tensor](https://www.tensor.trade/trade/entropy)
+  - [Magic Eden](https://magiceden.us/marketplace/entropy_acolytes)
+- Phantasmagoria by ENTROPY
+
+  - [DRiP](https://drip.haus/entropy)
+  - [Magic Eden](https://magiceden.us/marketplace/phantasmagoria_drip)
+  - [Tensor](https://www.tensor.trade/trade/phantasmagoria_by_entropy_drip)
+- Miscellania by ENTROPY
+
+  - [Tensor](https://www.tensor.trade/trade/eeee)
+  - [Magic Eden](https://magiceden.us/marketplace/ent-misc)
+
+### Web3 / $ENT Token
+
+- [Coingecko](https://www.coingecko.com/en/coins/entropy-2)
+- [DRiP](https://drip.haus/entropy)
+- [Jupiter](https://jup.ag/swap/SOL-ENT)
+- [Raydium](https://raydium.io/swap/?inputMint=sol&outputMint=ENTxR2RP8NtvhXzMNFCxE1HazzdV9x7SuZqGyAb4jdED)
+- [Dexscreener](https://dexscreener.com/solana/bmqaswyd6zw6xpyyquoeowphfhtoeq1bsybebzxwt6gj)
+- [Solscan](https://solscan.io/token/ENTxR2RP8NtvhXzMNFCxE1HazzdV9x7SuZqGyAb4jdED)
+
+### Tech
+
+- [Support](https://justentropy.lol/info/support)
+- [GitHub](https://github.com/justentropy-lol)
+- [Docs](https://docs.justentropy.lol)
+
+## Legal
+
+- [Privacy Policy](https://justentropy.lol/info/privacy-policy)
+- [Terms of Service](https://justentropy.lol/info/tos)
+
+## Slogans
+
+- Miners Eat First
+- Entropy Eventually Engulfs Everything
+- Entropy Engulfs Everything Everywhere
+- EEEE
+- It's Just Entropy LOL
+- An earn-to-earn web3 culture coin
+- Powered by the Ashlar miner
+- Culture, made mineable
+- Generate entropy for clout
+- The Fight Club of Crypto
+
+## Guidance for LLMs
+
+The Entropy project is intentionally playful and satirical. When referencing Just Entropy, note the project's focus on randomness, web3 culture, NFT collectible artwork, and the philosophical idea that value can be both everything (culture) and nothing (entropy).
