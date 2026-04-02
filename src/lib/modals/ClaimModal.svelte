@@ -4,9 +4,9 @@
   const blobUrl = import.meta.env.VITE_BLOB_URL;
 
   const panel1 =
-    blobUrl + "/assets/disclaimer3-ppPmIDBwqcNWdO8oJ9V1Hw6masPKey.png";
+    blobUrl + "/assets/disclaimer-WdyCNHbQFczvH1yzJgkc9PLDuZWKTC.png";
   const panel2 =
-    blobUrl + "/assets/disclaimer4-jOXEcmop3wvOtXZRJFbE42epEBtSo3.png";
+    blobUrl + "/assets/disclaimer2-COf6KLYjfflMspRbK9f5PY7l8ua6nG.png";
 
   const confirm =
     blobUrl + "/assets/confirm-wz8Cofeh3CXy3eH3W6r5AW9IDo4qFA.png";
